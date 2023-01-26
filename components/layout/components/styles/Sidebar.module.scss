@@ -1,0 +1,70 @@
+@import 'styles/_variables';
+.sidebarRoot {
+	background-color: $darkPurple;
+	height: 100vh;
+	position: fixed;
+	left: 0;
+	top: 0;
+	transition: width 0.5s;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+	.sidebarHeader {
+		height: 6rem;
+		display: flex;
+		align-items: center;
+		padding: 1rem 2rem;
+		.closeButton {
+			svg {
+				fill: $medChamp;
+				width: 3rem;
+				height: 3rem;
+			}
+		}
+	}
+	.divider {
+		width: 100%;
+		height: 1px;
+		background-color: transparentize($medChamp, 0.5);
+		margin-top: 3px;
+		position: relative;
+		.subtitle {
+			color: $medChamp;
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			opacity: 1;
+			background-color: $darkPurple;
+			padding: 0.1rem 1.5rem;
+		}
+	}
+	.sectionDivider {
+		margin-top: 3rem;
+	}
+	.pageSection {
+		padding: 2rem 0;
+	}
+}
+.sidebarOpen {
+	width: 30rem;
+}
+.sidebarClosed {
+	width: 0rem;
+}
+.backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	background-color: #000;
+	transition: opacity 0.5s;
+}
+.backdropOpen {
+	opacity: 0.6;
+	width: 100vw;
+}
+.backdropClosed {
+	opacity: 0;
+	width: 0;
+}

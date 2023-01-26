@@ -1,0 +1,26 @@
+@import 'styles/_variables';
+.sidebarItem {
+	display: grid;
+	grid-template-columns: 3rem minmax(0, 1fr);
+	width: 100%;
+	padding: 1rem 3rem;
+	align-items: center;
+	background-color: $darkPurple;
+	color: $medChamp;
+	fill: $medChamp;
+	gap: 1.5rem;
+	font-size: 1.8rem;
+	text-align: left;
+	svg {
+		width: 3rem;
+		height: 3rem;
+	}
+	&:hover {
+		background-color: lighten($darkPurple, 5%);
+	}
+	p {
+		overflow: hidden;
+		white-space: nowrap;
+		text-decoration: none;
+	}
+}

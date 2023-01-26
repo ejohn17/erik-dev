@@ -1,0 +1,19 @@
+@import 'styles/_variables';
+.root {
+	display: grid;
+	grid-template-rows: 6rem minmax(0, 1fr);
+	.header {
+		background-color: $medPurple;
+		box-shadow: 0 3px 2px $blueBlack;
+		display: flex;
+		align-items: center;
+		padding: 1rem 2rem;
+		.menuButton {
+			svg {
+				fill: $medChamp;
+				width: 3rem;
+				height: 3rem;
+			}
+		}
+	}
+}
