@@ -2,15 +2,17 @@
 .root {
 	display: grid;
 	grid-template-rows: 6rem minmax(0, 1fr);
+	height: 100vh;
 	.header {
-		background-color: $medPurple;
+		background-color: $richBlack;
 		box-shadow: 0 3px 2px $blueBlack;
 		display: flex;
 		align-items: center;
 		padding: 1rem 2rem;
+		z-index: 1;
 		.menuButton {
 			svg {
-				fill: $medChamp;
+				fill: $snow;
 				width: 3rem;
 				height: 3rem;
 			}

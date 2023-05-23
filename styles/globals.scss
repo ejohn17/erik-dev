@@ -1,5 +1,10 @@
 @import 'styles/basscss.min.scss';
 @import 'styles/normalize.converted.scss';
+@import 'styles/_variables';
 a {
 	color: transparent;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+	background-color: $richBlack;
 }

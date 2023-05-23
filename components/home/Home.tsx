@@ -1,11 +1,13 @@
-import { ReactNode } from "react";
+import classes from './styles/Home.module.scss'
 
-interface LayoutProps {
-  children: ReactNode;
+const Home = (): JSX.Element => {
+	return (
+		<div className={classes.root}>
+			<div className={classes.content}>
+				<div className={classes.welcome}></div>
+			</div>
+		</div>
+	)
 }
 
-const Home = ({ children }: LayoutProps): JSX.Element => {
-  return <div>{children}</div>;
-};
-
-export default Home;
+export default Home

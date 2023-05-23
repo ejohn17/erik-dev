@@ -1,12 +1,12 @@
 @import 'styles/_variables';
 .sidebarRoot {
-	background-color: $darkPurple;
+	background-color: $richBlack;
 	height: 100vh;
 	position: fixed;
 	left: 0;
 	top: 0;
 	transition: width 0.5s;
-	z-index: 1;
+	z-index: 3;
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
@@ -17,7 +17,7 @@
 		padding: 1rem 2rem;
 		.closeButton {
 			svg {
-				fill: $medChamp;
+				fill: $snow;
 				width: 3rem;
 				height: 3rem;
 			}
@@ -26,16 +26,16 @@
 	.divider {
 		width: 100%;
 		height: 1px;
-		background-color: transparentize($medChamp, 0.5);
+		background-color: transparentize($snow, 0.5);
 		margin-top: 3px;
 		position: relative;
 		.subtitle {
-			color: $medChamp;
+			color: $snow;
 			position: absolute;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			opacity: 1;
-			background-color: $darkPurple;
+			background-color: $richBlack;
 			padding: 0.1rem 1.5rem;
 		}
 	}
@@ -59,6 +59,7 @@
 	height: 100vh;
 	background-color: #000;
 	transition: opacity 0.5s;
+	z-index: 2;
 }
 .backdropOpen {
 	opacity: 0.6;

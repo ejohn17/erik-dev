@@ -1,0 +1,43 @@
+@import 'styles/_variables';
+.root {
+	background-color: $lightOxford;
+	padding: 3rem;
+	height: 100%;
+	overflow: auto;
+	.content {
+		max-width: 80rem;
+		width: 100%;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		.title {
+			color: $snow;
+			text-align: center;
+			margin-bottom: 4rem;
+			margin-top: 2rem;
+			font-size: 3rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: 500;
+			svg {
+				width: 10rem;
+				height: 6rem;
+				margin-right: 1rem;
+			}
+		}
+		.seoContent {
+			margin-top: 6rem;
+			color: $snow;
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			ol {
+				padding-left: 1.5rem;
+				display: flex;
+				flex-direction: column;
+				gap: 1.5rem;
+			}
+		}
+	}
+}

@@ -5,9 +5,9 @@
 	width: 100%;
 	padding: 1rem 3rem;
 	align-items: center;
-	background-color: $darkPurple;
-	color: $medChamp;
-	fill: $medChamp;
+	background-color: $richBlack;
+	color: $snow;
+	fill: $snow;
 	gap: 1.5rem;
 	font-size: 1.8rem;
 	text-align: left;
@@ -16,7 +16,7 @@
 		height: 3rem;
 	}
 	&:hover {
-		background-color: lighten($darkPurple, 5%);
+		background-color: lighten($richBlack, 5%);
 	}
 	p {
 		overflow: hidden;
