@@ -3,8 +3,16 @@ FROM node:20-bullseye-slim
 RUN apt update
 RUN apt-get install nodejs -y
 RUN apt-get install yarn -y
-RUN apt-get install python3 -y
-RUN apt-get install python3-pip -y
+
+RUN apt-get install -y \
+    bash \
+    rsync \
+    openssh-client 
+
+RUN wget https://www.python.org/ftp/python/3.10.8/Python-3.10.8.tgz 
+RUN tar xzf Python-3.10.8.tgz
+RUN ./Python-3.10.8/configure --enable-optimizations
+RUN make altinstall 
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app

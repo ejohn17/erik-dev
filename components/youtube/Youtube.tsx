@@ -1,10 +1,29 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 
 import classes from './styles/Youtube.module.scss'
 import { ImYoutube2 } from 'react-icons/im'
 import UploadVideoBox from './components/UploadVideoBox'
+import VideoPlayer from '../common/VideoPlayer'
+
+import FileSaver from 'file-saver'
 
 const Youtube = (): JSX.Element => {
+	const [downloadURL, setDownloadURL] = useState<string>('')
+	const [videoTitle, setVideoTitle] = useState<string>('')
+
+	const clearVideo = useCallback(() => {
+		setDownloadURL('')
+		setVideoTitle('')
+	}, [])
+
+	const downloadVideo = useCallback(() => {
+		fetch(downloadURL)
+			.then((res) => res.blob())
+			.then((blob) => {
+				FileSaver.saveAs(downloadURL, `${videoTitle}.mp4`)
+			})
+	}, [downloadURL, videoTitle])
+
 	return (
 		<div className={classes.root}>
 			<div className={classes.content}>
@@ -12,7 +31,22 @@ const Youtube = (): JSX.Element => {
 					<ImYoutube2 />
 					to Mp3
 				</h2>
-				<UploadVideoBox />
+				{downloadURL ? (
+					<div className={classes.loadedVideo}>
+						<VideoPlayer url={downloadURL} className={classes.videoPlayer} />
+						<div className={classes.videoActions}>
+							<button onClick={downloadVideo}>Download</button>
+							<button onClick={clearVideo}>Reset</button>
+						</div>
+					</div>
+				) : (
+					<UploadVideoBox
+						downloadURL={downloadURL}
+						videoTitle={videoTitle}
+						setDownloadURL={setDownloadURL}
+						setVideoTitle={setVideoTitle}
+					/>
+				)}
 				<div className={classes.seoContent}>
 					<p>
 						This is a simple tool for you to use in order to take any Youtube video that you find and turn that videos
