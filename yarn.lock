@@ -1417,6 +1417,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^0.17.1":
+  version: 0.17.1
+  resolution: "axios@npm:0.17.1"
+  dependencies:
+    follow-redirects: ^1.2.5
+    is-buffer: ^1.1.5
+  checksum: 04e04f201fd3521c303982310243819fbd6db64793cef07ff0ac222157e79d54a14c14f41ae9ccab9333b76c44a360d4bf04da347986d78ce462409f9b8da884
+  languageName: node
+  linkType: hard
+
 "axios@npm:^1.3.1":
   version: 1.3.1
   resolution: "axios@npm:1.3.1"
@@ -1909,8 +1919,10 @@ __metadata:
     react-dom: 18.2.0
     react-icons: ^4.7.1
     sass: ^1.57.1
+    screenfull: ^6.0.2
     stream: ^0.0.2
     typescript: 4.9.4
+    youtube-captions-scraper: ^2.0.0
     youtube-dl-exec: ^2.1.11
   languageName: unknown
   linkType: soft
@@ -2473,7 +2485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.15.0, follow-redirects@npm:^1.2.5":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -2832,6 +2844,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"he@npm:^1.1.1":
+  version: 1.2.0
+  resolution: "he@npm:1.2.0"
+  bin:
+    he: bin/he
+  checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
 "http-cache-semantics@npm:^4.1.0":
   version: 4.1.0
   resolution: "http-cache-semantics@npm:4.1.0"
@@ -3044,6 +3065,13 @@ __metadata:
     call-bind: ^1.0.2
     has-tostringtag: ^1.0.0
   checksum: c03b23dbaacadc18940defb12c1c0e3aaece7553ef58b162a0f6bba0c2a7e1551b59f365b91e00d2dbac0522392d576ef322628cb1d036a0fe51eb466db67222
+  languageName: node
+  linkType: hard
+
+"is-buffer@npm:^1.1.5":
+  version: 1.1.6
+  resolution: "is-buffer@npm:1.1.6"
+  checksum: 4a186d995d8bbf9153b4bd9ff9fd04ae75068fe695d29025d25e592d9488911eeece84eefbd8fa41b8ddcc0711058a71d4c466dcf6f1f6e1d83830052d8ca707
   languageName: node
   linkType: hard
 
@@ -3374,6 +3402,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: ad580b4bdbb7ca1f7abf7e1bce63a9a0b98e370cf40194b03380a46b4ed799c9573029599caebc1b14e3f24b111aef72b96674a56cfa105e0f5ac70546cdc005
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.4":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
   languageName: node
   linkType: hard
 
@@ -4359,6 +4394,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"screenfull@npm:^6.0.2":
+  version: 6.0.2
+  resolution: "screenfull@npm:6.0.2"
+  checksum: 56a541da09241ae7c97115cc31245623c09230bcbebb93636871e955b545f26c7dcdb2299795234a0a21bff5d5401b7329b22609becf4c381a9e22347acf87ba
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.3.0":
   version: 6.3.0
   resolution: "semver@npm:6.3.0"
@@ -4599,6 +4641,13 @@ __metadata:
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
+  languageName: node
+  linkType: hard
+
+"striptags@npm:^3.1.0":
+  version: 3.2.0
+  resolution: "striptags@npm:3.2.0"
+  checksum: 1b1f127ab46394665bd4f4dc3dc10f5f98c012cbdea93a68b10d78693671e98efc9ae7609f546af997ae0a02b81a5c9b7b916fa119482c31741406cdabaebf3b
   languageName: node
   linkType: hard
 
@@ -5027,6 +5076,18 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"youtube-captions-scraper@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "youtube-captions-scraper@npm:2.0.0"
+  dependencies:
+    axios: ^0.17.1
+    he: ^1.1.1
+    lodash: ^4.17.4
+    striptags: ^3.1.0
+  checksum: 702a4a0e40b1d6c1471f1d899b8f93ae5fcabc7eadd22b2aceee71b6c6f0d8e0279f70be6036d51d587cfe4352d68b582db02cc99b1407594f88ef99e1762003
   languageName: node
   linkType: hard
 

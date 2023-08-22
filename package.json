@@ -32,8 +32,10 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
     "sass": "^1.57.1",
+    "screenfull": "^6.0.2",
     "stream": "^0.0.2",
     "typescript": "4.9.4",
+    "youtube-captions-scraper": "^2.0.0",
     "youtube-dl-exec": "^2.1.11"
   }
 }

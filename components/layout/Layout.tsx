@@ -15,17 +15,17 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
-	const closeSidebar = () => setSidebarOpen(false)
-
 	return (
 		<div className={classes.root}>
-			<Sidebar open={sidebarOpen} close={closeSidebar} />
 			<div className={classes.header}>
 				<IconButton className={classes.menuButton} onClick={toggleSidebar}>
 					<MdMenu />
 				</IconButton>
 			</div>
-			<div>{children}</div>
+			<div className={classes.main}>
+				<Sidebar open={sidebarOpen} />
+				{children}
+			</div>
 		</div>
 	)
 }

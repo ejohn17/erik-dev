@@ -1,27 +1,22 @@
 @import 'styles/_variables';
 .sidebarRoot {
 	background-color: $richBlack;
-	height: 100vh;
-	position: fixed;
-	left: 0;
-	top: 0;
 	transition: width 0.5s;
 	z-index: 3;
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
-	.sidebarHeader {
-		height: 6rem;
-		display: flex;
-		align-items: center;
-		padding: 1rem 2rem;
-		.closeButton {
-			svg {
-				fill: $snow;
-				width: 3rem;
-				height: 3rem;
-			}
-		}
+	position: relative;
+	.verticalBorder {
+		width: 1px;
+		background-color: transparentize($snow, 0.5);
+		height: 100%;
+		position: absolute;
+		right: 0;
+		padding: 2rem 0;
+		background-clip: content-box;
+		opacity: 0;
+		transition: opacity 0.5s;
 	}
 	.divider {
 		width: 100%;
@@ -41,6 +36,8 @@
 	}
 	.sectionDivider {
 		margin-top: 3rem;
+		padding: 0 2rem;
+		background-clip: content-box;
 	}
 	.pageSection {
 		padding: 2rem 0;
@@ -48,24 +45,10 @@
 }
 .sidebarOpen {
 	width: 30rem;
+	.verticalBorder {
+		opacity: 1;
+	}
 }
 .sidebarClosed {
 	width: 0rem;
-}
-.backdrop {
-	position: fixed;
-	top: 0;
-	left: 0;
-	height: 100vh;
-	background-color: #000;
-	transition: opacity 0.5s;
-	z-index: 2;
-}
-.backdropOpen {
-	opacity: 0.6;
-	width: 100vw;
-}
-.backdropClosed {
-	opacity: 0;
-	width: 0;
 }

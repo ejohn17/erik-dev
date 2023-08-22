@@ -5,7 +5,7 @@
 	height: 100vh;
 	.header {
 		background-color: $richBlack;
-		box-shadow: 0 3px 2px $blueBlack;
+		border-bottom: 1px solid #ffffff90;
 		display: flex;
 		align-items: center;
 		padding: 1rem 2rem;
@@ -17,5 +17,9 @@
 				height: 3rem;
 			}
 		}
+	}
+	.main {
+		display: grid;
+		grid-template-columns: max-content minmax(0, 1fr);
 	}
 }

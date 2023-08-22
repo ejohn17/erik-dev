@@ -2,6 +2,7 @@
 .sidebarItem {
 	display: grid;
 	grid-template-columns: 3rem minmax(0, 1fr);
+	align-items: center;
 	width: 100%;
 	padding: 1rem 3rem;
 	align-items: center;
@@ -14,6 +15,7 @@
 	svg {
 		width: 3rem;
 		height: 3rem;
+		margin: 0 auto;
 	}
 	&:hover {
 		background-color: lighten($richBlack, 5%);
