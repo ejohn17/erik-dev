@@ -2,10 +2,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { create as createYoutubeDL } from 'youtube-dl-exec'
-import { getVideoRef, uploadVideoArray } from '@/firebaseUtils/storage'
+import { getVideoRef, uploadAudioArray, uploadVideoArray } from '@/firebaseUtils/storage'
 import { StorageReference } from 'firebase/storage'
 import os from 'os'
 import { getSubtitles } from 'youtube-captions-scraper'
+
+import ffmpeg from '@/utilities/ffmpeg'
+import { Readable } from 'stream'
 
 interface RequestData {
 	youtubeURL: string
@@ -87,8 +90,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			const videoBuffer = Buffer.concat(bufs)
 			const videoArray = new Uint8Array(videoBuffer)
 
+			const readable = new Readable()
+			readable._read = (): void => {} // we already have all data in memory, so no-op this function;
+			readable.push(videoBuffer) // stream all data in the buffer to the stream
+			readable.push(null)
+			const audioBufs = [] as Buffer[]
+			console.log('BEFORE')
+			await new Promise((res) => {
+				const outStream = ffmpeg(readable)
+					.noVideo()
+					.withAudioCodec('libmp3lame')
+					.audioBitrate(128)
+					.audioChannels(1)
+					.audioFrequency(22050)
+					.audioQuality(0)
+					.outputFormat('mp3')
+					.on('end', res)
+					.pipe()
+				outStream.on('data', (d): void => {
+					audioBufs.push(d)
+				})
+			})
+
+			const audioBuffer = Buffer.concat(audioBufs)
+			const audioArray = new Uint8Array(audioBuffer)
+
 			const refTitle = `${title.replace(/[/\\?%*:|"<>]/g, '')}.mp4`
-			const downloadURL = await uploadVideoArray(refTitle, videoArray)
+			const audioRefTitle = `${title.replace(/[/\\?%*:|"<>]/g, '')}.mp3`
+			const [downloadURL, audioURL] = await Promise.all([
+				uploadVideoArray(refTitle, videoArray),
+				uploadAudioArray(audioRefTitle, audioArray),
+			])
 			const downloadRef = getVideoRef(refTitle)
 
 			res.status(200).json({ downloadURL, title, downloadRef, subtitles })

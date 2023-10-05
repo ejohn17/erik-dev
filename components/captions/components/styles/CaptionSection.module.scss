@@ -1,0 +1,19 @@
+@import 'styles/_variables';
+
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	align-items: flex-start;
+	.caption {
+		color: $snow;
+		font-size: 1.6rem;
+		padding: 0.5rem 1rem;
+		border-radius: 5px;
+		&.active,
+		&:hover {
+			background-color: transparentize($snow, 0.9);
+			font-weight: 500;
+		}
+	}
+}

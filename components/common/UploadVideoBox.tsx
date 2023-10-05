@@ -10,9 +10,10 @@ interface UploadProps {
 	setDownloadURL: (url: string) => void
 	setVideoTitle: (title: string) => void
 	setVideoCaptions?: (data: YoutubeSubtitle[]) => void
+	setAudioURL?: (url: string) => void
 }
 
-const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions }: UploadProps): JSX.Element => {
+const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAudioURL }: UploadProps): JSX.Element => {
 	const [youtubeURL, setYoutubeURL] = useState<string>('')
 	const [loading, setLoading] = useState<boolean>(false)
 
@@ -34,14 +35,18 @@ const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions }: Upl
 		axios
 			.post('/api/youtubeUpload', { youtubeURL })
 			.then((resp) => {
+				console.log('RESP!', resp)
 				setVideoTitle(resp.data.title)
 				setDownloadURL(resp.data.downloadURL)
-				if (setDownloadURL) {
-					setVideoCaptions(resp.data.captions)
+				if (!!setVideoCaptions) {
+					setVideoCaptions(resp.data.subtitles)
+				}
+				if (!!setAudioURL) {
+					setAudioURL(resp.data.audioURL)
 				}
 			})
 			.finally(setLoadingFalse)
-	}, [setDownloadURL, setVideoCaptions, setVideoTitle, youtubeURL])
+	}, [setAudioURL, setDownloadURL, setVideoCaptions, setVideoTitle, youtubeURL])
 
 	return (
 		<div className={classes.inputPaper}>

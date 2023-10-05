@@ -23,7 +23,7 @@ const Sidebar = ({ open }: SidebarProps): JSX.Element => {
 					<p className={classes.subtitle}>Exercises</p>
 				</div>
 				<div className={classes.pageSection}>
-					<SidebarItem text="Youtube to Mp4" icon={<ImYoutube2 />} path="/youtube-to-mp4" />
+					<SidebarItem text="Youtube to Mp3" icon={<ImYoutube2 />} path="/youtube-to-mp3" />
 					<SidebarItem
 						text="Caption Generator"
 						icon={<BsTranslate style={{ width: '2rem', height: '2rem' }} />}

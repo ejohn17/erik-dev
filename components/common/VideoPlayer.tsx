@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect, MutableRefObject } from 'react'
+import React, { useState, useRef, useCallback, useEffect, MutableRefObject, useMemo } from 'react'
 
 import screenfull from 'screenfull'
 
@@ -8,19 +8,21 @@ import classes from './styles/VideoPlayer.module.scss'
 import IconButton from './IconButton'
 import Slider from './Slider'
 import { MdOutlineFullscreen, MdOutlineFullscreenExit, MdPause, MdPlayArrow } from 'react-icons/md'
+import { addHeadingZero } from '@/utilities/addHeadingZero'
 
 interface VideoProps {
 	url: string
 	className: string
 	videoRef: MutableRefObject<HTMLVideoElement>
+	timeElapsed: number
+	setTime: (time: number) => void
 }
 
-const VideoPlayer = ({ url, className, videoRef }: VideoProps): JSX.Element => {
+const VideoPlayer = ({ url, className, videoRef, timeElapsed, setTime }: VideoProps): JSX.Element => {
 	const [playing, setPlaying] = useState<boolean>(false)
 	const [volume, setVolume] = useState<number>(100)
 	const [dragging, setDragging] = useState<boolean>(false)
 	const [timerInterval, setTimerInterval] = useState<ReturnType<typeof setInterval>>(null)
-	const [timeElapsed, setTime] = useState(0)
 	const [isFullscreen, setFullscreen] = useState<boolean>(false)
 
 	const wrapperRef = useRef<HTMLDivElement>(null)
@@ -121,6 +123,13 @@ const VideoPlayer = ({ url, className, videoRef }: VideoProps): JSX.Element => {
 		[videoRef],
 	)
 
+	const totalDuration = useMemo(() => videoRef.current?.duration, [videoRef])
+
+	const totalM = totalDuration === -1 ? '--' : Math.floor(totalDuration / 60.0)
+	const totalS = totalDuration === -1 ? '--' : addHeadingZero(Math.round(totalDuration % 60.0))
+	const minutes = Math.floor(timeElapsed ?? 0 / 60.0)
+	const seconds = addHeadingZero(Math.floor(timeElapsed ?? 0 % 60.0))
+
 	return (
 		<div className={cn(className, classes.root)} ref={wrapperRef} onDoubleClick={toggleFullscreen}>
 			<div className={classes.backdrop} onClick={togglePlay} />
@@ -139,6 +148,9 @@ const VideoPlayer = ({ url, className, videoRef }: VideoProps): JSX.Element => {
 					<div className={classes.volumeContainer}>
 						<Slider value={volume} onChange={handleChangeVolume} />
 					</div>
+					<p>
+						{minutes}:{seconds} / {totalM}:{totalS}
+					</p>
 				</div>
 				<IconButton className={classes.fullscreenButton} onClick={toggleFullscreen}>
 					{screenfull.isFullscreen ? <MdOutlineFullscreenExit /> : <MdOutlineFullscreen />}

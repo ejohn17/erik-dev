@@ -42,13 +42,17 @@
 			.playButton {
 				padding: 1rem;
 				svg {
-					fill: #fff;
+					fill: $snow;
 					width: 30px;
 					height: 30px;
 				}
 			}
 			.volumeContainer {
 				max-width: 10rem;
+			}
+			p {
+				margin-left: 1rem;
+				color: $snow;
 			}
 		}
 		.fullscreenButton {
@@ -58,7 +62,7 @@
 			width: 3.6rem;
 			height: 3.6rem;
 			svg {
-				fill: #fff;
+				fill: $snow;
 				width: 3rem;
 				height: 3rem;
 				transition: width 0.2s, height 0.2s;

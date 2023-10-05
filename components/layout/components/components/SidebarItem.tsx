@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 
 import classes from './styles/SidebarItem.module.scss'
+import Link from 'next/link'
 
 interface SidebarItemProps {
 	icon: ReactNode
@@ -10,12 +11,12 @@ interface SidebarItemProps {
 
 const SidebarItem = ({ icon, text, path }: SidebarItemProps): JSX.Element => {
 	return (
-		<a href={path}>
+		<Link href={path}>
 			<button className={classes.sidebarItem}>
 				{icon}
 				<p>{text}</p>
 			</button>
-		</a>
+		</Link>
 	)
 }
 

@@ -1,6 +1,5 @@
 import ffmpeg from 'fluent-ffmpeg'
 
-let hasExternalFFMPEG = false
 const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path
 ffmpeg.setFfmpegPath(ffmpegPath)
 
