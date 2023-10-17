@@ -4,7 +4,7 @@ import classes from './styles/UploadVideoBox.module.scss'
 
 import axios from 'axios'
 import Spinner from '@/components/common/Spinner'
-import { YoutubeSubtitle } from '@/pages/api/youtubeUpload'
+import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
 
 interface UploadProps {
 	setDownloadURL: (url: string) => void
@@ -33,9 +33,8 @@ const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAu
 	const uploadVideo = useCallback(async () => {
 		setLoadingTrue()
 		axios
-			.post('/api/youtubeUpload', { youtubeURL })
+			.post('/api/videos/youtubeUpload', { youtubeURL })
 			.then((resp) => {
-				console.log('RESP!', resp)
 				setVideoTitle(resp.data.title)
 				setDownloadURL(resp.data.downloadURL)
 				if (!!setVideoCaptions) {

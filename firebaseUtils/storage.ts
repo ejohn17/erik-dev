@@ -4,7 +4,6 @@ import {
 	StorageReference,
 	getStorage,
 	ref,
-	getStream,
 	uploadBytes,
 	getDownloadURL,
 	getBlob,

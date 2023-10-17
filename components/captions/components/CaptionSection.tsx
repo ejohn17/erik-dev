@@ -1,31 +1,17 @@
 import { MutableRefObject, useCallback, useMemo, useState } from 'react'
 import classes from './styles/CaptionSection.module.scss'
-import { YoutubeSubtitle } from '@/pages/api/youtubeUpload'
+import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
 
 import cn from 'classnames'
 
 interface CaptionSectionProps {
 	videoRef: MutableRefObject<HTMLVideoElement>
 	videoCaptions: YoutubeSubtitle[]
-	timeElapsed: number
 	setTime: (time: number) => void
+	activeCaption: number
 }
 
-const CaptionSection = ({ videoRef, videoCaptions, timeElapsed, setTime }: CaptionSectionProps): JSX.Element => {
-	const activeCaption = useMemo(() => {
-		let captionIdx = 0
-		for (let i = 0; i < videoCaptions.length - 1; i++) {
-			const currentCaption = videoCaptions[i]
-			const nextCaption = videoCaptions[i + 1]
-
-			if (timeElapsed >= parseFloat(currentCaption.start) && timeElapsed < parseFloat(nextCaption.start)) {
-				captionIdx = i
-				break
-			}
-		}
-		return captionIdx
-	}, [timeElapsed, videoCaptions])
-
+const CaptionSection = ({ videoRef, videoCaptions, setTime, activeCaption }: CaptionSectionProps): JSX.Element => {
 	const jumpToCaption = useCallback(
 		(caption: YoutubeSubtitle) => {
 			videoRef.current.currentTime = parseFloat(caption.start)

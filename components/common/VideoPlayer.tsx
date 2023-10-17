@@ -21,6 +21,7 @@ interface VideoProps {
 const VideoPlayer = ({ url, className, videoRef, timeElapsed, setTime }: VideoProps): JSX.Element => {
 	const [playing, setPlaying] = useState<boolean>(false)
 	const [volume, setVolume] = useState<number>(100)
+	const [totalDuration, setTotalDuration] = useState<number>(0)
 	const [dragging, setDragging] = useState<boolean>(false)
 	const [timerInterval, setTimerInterval] = useState<ReturnType<typeof setInterval>>(null)
 	const [isFullscreen, setFullscreen] = useState<boolean>(false)
@@ -87,7 +88,7 @@ const VideoPlayer = ({ url, className, videoRef, timeElapsed, setTime }: VideoPr
 			window.removeEventListener('keydown', onKey)
 			screenfull.off('change', onFullscren)
 		}
-	}, [isFullscreen, togglePlay, videoRef])
+	}, [isFullscreen, setTime, togglePlay, videoRef])
 
 	useEffect(() => {
 		// if timer should start so the progress bar is updating
@@ -123,17 +124,15 @@ const VideoPlayer = ({ url, className, videoRef, timeElapsed, setTime }: VideoPr
 		[videoRef],
 	)
 
-	const totalDuration = useMemo(() => videoRef.current?.duration, [videoRef])
-
 	const totalM = totalDuration === -1 ? '--' : Math.floor(totalDuration / 60.0)
 	const totalS = totalDuration === -1 ? '--' : addHeadingZero(Math.round(totalDuration % 60.0))
-	const minutes = Math.floor(timeElapsed ?? 0 / 60.0)
-	const seconds = addHeadingZero(Math.floor(timeElapsed ?? 0 % 60.0))
+	const minutes = Math.floor((timeElapsed ?? 0) / 60.0)
+	const seconds = addHeadingZero(Math.floor((timeElapsed ?? 0) % 60.0))
 
 	return (
 		<div className={cn(className, classes.root)} ref={wrapperRef} onDoubleClick={toggleFullscreen}>
 			<div className={classes.backdrop} onClick={togglePlay} />
-			<video src={url} ref={videoRef} />
+			<video src={url} ref={videoRef} onLoadedMetadata={(event) => setTotalDuration(event.currentTarget.duration)} />
 			<div className={classes.controls}>
 				<Slider
 					className={classes.progressBar}

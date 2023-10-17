@@ -16,6 +16,8 @@ const Youtube = (): JSX.Element => {
 	const [downloadURL, setDownloadURL] = useState<string>('')
 	const [videoTitle, setVideoTitle] = useState<string>('')
 	const [downloadBusy, setDownloadBusy] = useState<boolean>(false)
+	const [timeElapsed, setTime] = useState<number>(0)
+
 	const videoRef = useRef<HTMLVideoElement>(null)
 
 	const clearVideo = useCallback(() => {
@@ -42,7 +44,13 @@ const Youtube = (): JSX.Element => {
 				{downloadURL ? (
 					<div className={classes.loadedVideo}>
 						<h3>{videoTitle.replaceAll('"', '')}</h3>
-						<VideoPlayer url={downloadURL} className={classes.videoPlayer} videoRef={videoRef} />
+						<VideoPlayer
+							url={downloadURL}
+							className={classes.videoPlayer}
+							videoRef={videoRef}
+							timeElapsed={timeElapsed}
+							setTime={setTime}
+						/>
 						<div className={classes.videoActions}>
 							<button onClick={downloadVideo}>
 								Download {downloadBusy ? <Spinner className={classes.spinner} /> : <MdDownload />}

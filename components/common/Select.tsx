@@ -8,19 +8,24 @@ interface SliderProps {
 		value: string
 		label: string
 	}[]
+	onSelect: (value: string) => void
+	className: string
 }
 
-const Slider = ({ options }: SliderProps): JSX.Element => {
+const Slider = ({ options, onSelect, className }: SliderProps): JSX.Element => {
 	return (
-		<select>
-			{options.map((option, idx) => {
-				return (
-					<option key={idx} value={option.value}>
-						{option.label}
-					</option>
-				)
-			})}
-		</select>
+		<div>
+			<select onChange={(e) => onSelect(e.currentTarget.value)}>
+				<option>Please a language</option>
+				{options.map((option, idx) => {
+					return (
+						<option key={idx} value={option.value}>
+							{option.label}
+						</option>
+					)
+				})}
+			</select>
+		</div>
 	)
 }
 
