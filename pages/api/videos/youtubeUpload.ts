@@ -9,6 +9,9 @@ import { getSubtitles } from 'youtube-caption-extractor'
 
 import ffmpeg from '@/utilities/ffmpeg'
 import { Readable } from 'stream'
+import path from 'path'
+import fs from 'fs'
+import md5 from 'md5'
 
 interface RequestData {
 	youtubeURL: string
@@ -36,14 +39,7 @@ export interface YoutubeSubtitle {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
 	const reqData = req.body as RequestData
 
-	let path = 'utilities/ytdlp/yt-dlp'
-	const platform = os.platform()
-	if (os.platform() === 'win32') {
-		path = 'utilities/ytdlp/yt-dlp.exe'
-	} else if (platform == 'darwin') {
-		path = 'utilities/ytdlp/yt-dlp_macos'
-	}
-	const youtubeDl = createYoutubeDL(path)
+	const youtubeDl = createYoutubeDL('utilities/ytdlp/yt-dlp')
 
 	const videoID = getVideoID(reqData.youtubeURL)
 
@@ -59,6 +55,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 	})
 
 	let title = ''
+	let finalFileName
 	await new Promise((res, rej) => {
 		youtubeDl(reqData.youtubeURL, {
 			dumpSingleJson: true,
@@ -69,22 +66,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			addHeader: ['referer:youtube.com', 'user-agent:googlebot'],
 		})
 			.then((output) => {
+				const randHash = md5(output.title + Date.now()).substring(0, 6) // 6 le
+				finalFileName = randHash
 				title = output.title
 				res(null)
 			})
 			.catch(rej)
 	})
 
-	const bufs = [] as Buffer[]
-	await new Promise((res, rej) => {
-		const child = (youtubeDl as any).exec([`${reqData.youtubeURL}`, `-o`, `-`])
-		child.stdout.on('data', (data: Buffer) => {
-			bufs.push(data)
+	console.log('ASDASDASDASDASD', finalFileName)
+	await new Promise(async (res, rej) => {
+		await youtubeDl(reqData.youtubeURL, {
+			output: `temp/${finalFileName}`,
 		})
-		child.on('exit', res)
+
+		const readStream = fs.createReadStream(`temp/${finalFileName}.webm`)
+		const bufs = []
+		readStream.on('data', function (d) {
+			bufs.push(d)
+		})
+		readStream.on('end', function () {
+			res(Buffer.concat(bufs))
+		})
 	})
-		.then(async () => {
-			const videoBuffer = Buffer.concat(bufs)
+		.then(async (videoBuffer: Buffer) => {
 			const videoArray = new Uint8Array(videoBuffer)
 
 			const readable = new Readable()

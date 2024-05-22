@@ -4,7 +4,6 @@ import type { AppProps } from 'next/app'
 import Layout from 'components/layout/Layout'
 
 import { initializeApp } from 'firebase/app'
-import { getStorage, ref } from 'firebase/storage'
 
 export const firebaseConfig = {
 	apiKey: 'AIzaSyBUZFWYoir25URbq33MF3s0HcYo0D1xHzY',
