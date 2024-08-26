@@ -14,16 +14,17 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
 	const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
 	const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
+	const closeMenu = () => setSidebarOpen(false)
 
 	return (
 		<div className={classes.root}>
-			<div className={classes.header}>
+			<header className={classes.header}>
 				<IconButton className={classes.menuButton} onClick={toggleSidebar}>
 					<MdMenu />
 				</IconButton>
-			</div>
-			<div className={classes.main}>
-				<Sidebar open={sidebarOpen} />
+			</header>
+			<div className={classes.main} onClick={sidebarOpen ? toggleSidebar : undefined}>
+				<Sidebar open={sidebarOpen} closeMenu={closeMenu} />
 				{children}
 			</div>
 		</div>

@@ -16,7 +16,6 @@ section {
 	display: block;
 }
 h1 {
-	font-size: 2em;
 	margin: 0.67em 0;
 }
 figcaption,
@@ -34,7 +33,6 @@ hr {
 }
 pre {
 	font-family: monospace, monospace;
-	font-size: 1em;
 }
 a {
 	background-color: transparent;
@@ -55,7 +53,6 @@ code,
 kbd,
 samp {
 	font-family: monospace, monospace;
-	font-size: 1em;
 }
 dfn {
 	font-style: italic;
@@ -65,11 +62,9 @@ mark {
 	color: #000;
 }
 small {
-	font-size: 80%;
 }
 sub,
 sup {
-	font-size: 75%;
 	line-height: 0;
 	position: relative;
 	vertical-align: baseline;
@@ -100,7 +95,6 @@ optgroup,
 select,
 textarea {
 	font-family: sans-serif;
-	font-size: 100%;
 	line-height: 1.15;
 	margin: 0;
 }
@@ -273,12 +267,10 @@ button {
 	outline: none !important;
 }
 html {
-	font-size: 62.5%;
 	font-family: Muli, Roboto, Helvetica Neue, Arial, sans-serif;
 	/*background-color: #262933;*/
 }
 body {
-	font-size: 14px;
 	-webkit-font-smoothing: antialiased;
 	font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 	line-height: 1.4;
@@ -294,31 +286,25 @@ html {
     overflow-y: auto;*/
 }
 html {
-    overflow: initial;
+	overflow: initial;
 }
 .h1,
 h1 {
-	font-size: 24px;
 }
 .h2,
 h2 {
-	font-size: 20px;
 }
 .h3,
 h3 {
-	font-size: 16px;
 }
 .h4,
 h4 {
-	font-size: 15px;
 }
 .h5,
 h5 {
-	font-size: 13px;
 }
 .h6,
 h6 {
-	font-size: 12px;
 }
 .ps > .ps__rail-x,
 .ps > .ps__rail-y {

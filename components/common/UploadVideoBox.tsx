@@ -35,6 +35,7 @@ const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAu
 		axios
 			.post('/api/videos/youtubeUpload', { youtubeURL })
 			.then((resp) => {
+				console.log('????????', resp)
 				setVideoTitle(resp.data.title)
 				setDownloadURL(resp.data.downloadURL)
 				if (!!setVideoCaptions) {

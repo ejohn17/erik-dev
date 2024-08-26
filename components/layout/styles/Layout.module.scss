@@ -1,25 +1,24 @@
 @import 'styles/_variables';
 .root {
 	display: grid;
-	grid-template-rows: 6rem minmax(0, 1fr);
+	grid-template-rows: 3.5rem minmax(0, 1fr);
 	height: 100vh;
 	.header {
 		background-color: $richBlack;
 		border-bottom: 1px solid #ffffff90;
 		display: flex;
 		align-items: center;
-		padding: 1rem 2rem;
+		padding: 0.5rem 1rem;
 		z-index: 1;
 		.menuButton {
 			svg {
 				fill: $snow;
-				width: 3rem;
-				height: 3rem;
+				width: 2rem;
+				height: 2rem;
 			}
 		}
 	}
 	.main {
-		display: grid;
-		grid-template-columns: max-content minmax(0, 1fr);
+		position: relative;
 	}
 }

@@ -1,16 +1,241 @@
 @import 'styles/_variables';
 .root {
 	background-color: $snow;
-	padding: 3rem;
-	.content {
-		max-width: 120rem;
-		width: 100%;
-		margin: 0 auto;
-		display: flex;
-		flex-direction: column;
-		.welcome {
-			padding: 4rem;
-			background-color: $deepChamp;
+	.introduction {
+		background: linear-gradient(46.6deg, $richBlack 62.7%, $snow 33%);
+		@media screen and (max-width: $md) {
+			background: linear-gradient(46.6deg, $richBlack 68%, $snow 33%);
+		}
+		.introductionContent {
+			width: 80%;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			padding: 5em 0 5em;
+			@media screen and (max-width: $md) {
+				width: 90%;
+			}
+			.hook {
+				display: flex;
+				justify-content: space-between;
+				.hookInfo {
+					color: $snow;
+					h1 {
+						font-size: 3em;
+					}
+					p {
+						margin-top: 2em;
+						font-size: 1.3em;
+					}
+				}
+				.headshot {
+					width: 20em;
+					height: 21em;
+					border: 2px $richBlack solid;
+					img {
+						margin-top: 2em;
+						margin-left: -2em;
+					}
+				}
+				@media screen and (max-width: $md) {
+					.hookInfo {
+						h1 {
+							font-size: 3em;
+						}
+						p {
+							margin-top: 1em;
+							font-size: 2em;
+						}
+					}
+				}
+			}
+			.tags {
+				display: flex;
+				justify-content: space-between;
+				color: $snow;
+				width: 40em;
+				gap: 4rem;
+				.tag {
+					font-size: 0.9em;
+				}
+				@media screen and (max-width: $md) {
+					width: 55em;
+					gap: 2rem;
+					.tag {
+						font-size: 1.4em;
+					}
+				}
+			}
+		}
+	}
+	.aboutMe {
+		.aboutMeContent {
+			width: 80%;
+			margin: 0 auto;
+			display: flex;
+			padding: 5em 0 5em;
+			gap: 7rem;
+			align-items: center;
+			@media screen and (max-width: $md) {
+				width: 90%;
+			}
+			.information {
+				max-width: 50%;
+				display: flex;
+				flex-direction: column;
+				gap: 2em;
+				h2 {
+					font-size: 3em;
+				}
+				p {
+					font-size: 1.2em;
+				}
+			}
+			.kelowna {
+				border: 2px $richBlack solid;
+				width: 35em;
+				height: 35em;
+				margin-left: auto;
+				img {
+					width: 100%;
+					margin-top: 2em;
+					margin-left: 2em;
+				}
+			}
+			@media screen and (max-width: $md) {
+				gap: 3rem;
+				.information {
+					h2 {
+						font-size: 3em;
+					}
+					p {
+						font-size: 1.4em;
+					}
+				}
+			}
+			@media screen and (max-width: $sm) {
+				.information {
+					max-width: none;
+					p {
+						font-size: 1.8em;
+					}
+				}
+				.kelownaContainer {
+					display: none;
+				}
+			}
+		}
+	}
+	.apps {
+		background: $richBlack;
+		.appsContent {
+			width: 80%;
+			margin: 0 auto;
+			display: flex;
+			flex-direction: column;
+			padding: 5em 0 5em;
+			@media screen and (max-width: $md) {
+				width: 90%;
+			}
+			.heading {
+				h2 {
+					color: $snow;
+					font-size: 3em;
+				}
+				@media screen and (max-width: $sm) {
+					h2 {
+						font-size: 5em;
+					}
+				}
+			}
+			.exercises {
+				margin-top: 4em;
+				display: flex;
+				gap: 4rem;
+				.exercise {
+					border: 2px solid $snow;
+					flex: 1 1 0px;
+					color: $snow;
+					padding: 2em;
+					display: flex;
+					flex-direction: column;
+					gap: 1em;
+					h3 {
+						font-size: 1.4em;
+					}
+					p {
+						font-size: 0.9em;
+						flex-grow: 1;
+					}
+					button {
+						margin-top: 3em;
+						color: $snow;
+						width: 10em;
+						border: 2px solid $snow;
+						font-size: 1.2em;
+						line-height: 1.2em;
+						padding: 0.5em;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						transition: color 0.5s, background-color 0.5s;
+						svg {
+							position: relative;
+							top: 1px;
+							margin-left: 0.1em;
+							font-size: 1.5em;
+						}
+						&.disabled {
+							cursor: default;
+							opacity: 0.4;
+						}
+						&:hover:not(.disabled) {
+							background-color: $snow;
+							color: $richBlack;
+						}
+					}
+				}
+				@media screen and (max-width: $md) {
+					gap: 2rem;
+					.exercise {
+						h3 {
+							font-size: 1.6em;
+						}
+						p {
+							font-size: 1.2em;
+						}
+						button {
+							width: 100%;
+							font-size: 1.4em;
+							line-height: 1.4em;
+							svg {
+								font-size: 1.7em;
+							}
+						}
+					}
+				}
+				@media screen and (max-width: $sm) {
+					flex-direction: column;
+					gap: 2rem;
+					.exercise {
+						padding: 3em;
+						h3 {
+							font-size: 2.6em;
+						}
+						p {
+							font-size: 2.2em;
+						}
+						button {
+							width: 13em;
+							font-size: 2em;
+							line-height: 1.6em;
+							svg {
+								font-size: 2em;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

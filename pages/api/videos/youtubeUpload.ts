@@ -74,7 +74,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			.catch(rej)
 	})
 
-	console.log('ASDASDASDASDASD', finalFileName)
 	await new Promise(async (res, rej) => {
 		await youtubeDl(reqData.youtubeURL, {
 			output: `temp/${finalFileName}`,
@@ -96,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			readable._read = (): void => {} // we already have all data in memory, so no-op this function;
 			readable.push(videoBuffer) // stream all data in the buffer to the stream
 			readable.push(null)
-			const audioBufs = [] as Buffer[]
+			const audioBufs = []
 			await new Promise((res) => {
 				const outStream = ffmpeg(readable)
 					.noVideo()
@@ -124,9 +123,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			])
 			const downloadRef = getVideoRef(refTitle)
 
+			fs.unlinkSync(`temp/${finalFileName}.webm`)
+
 			res.status(200).json({ downloadURL, title, downloadRef, subtitles })
 		})
-		.catch(() => {
-			console.log('REJ')
+		.catch((e) => {
+			console.log('REJ', e)
 		})
 }

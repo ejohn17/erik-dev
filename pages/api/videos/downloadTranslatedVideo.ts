@@ -77,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			file.on('finish', res)
 		})
 
-		const videoBufs = [] as Buffer[]
+		const videoBufs = []
 		await new Promise((resolve, reject) => {
 			ffmpeg()
 				.input(videoPath)

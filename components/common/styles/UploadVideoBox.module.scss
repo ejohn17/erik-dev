@@ -2,13 +2,16 @@
 .inputPaper {
 	width: 100%;
 	padding: 1rem 3rem;
-	background-color: $lapis;
+	background-color: $snow;
 	border-radius: 15px;
 	h4 {
-		color: $snow;
-		font-weight: 400;
+		color: $richBlack;
+		font-weight: 500;
 		font-size: 1.8rem;
 		margin: 2rem 0;
+		@media screen and (max-width: $md) {
+			font-size: 1.6rem;
+		}
 	}
 	.actions {
 		display: grid;
@@ -19,24 +22,24 @@
 		justify-content: center;
 		input {
 			background-color: transparent;
-			border: 1px solid $snow;
+			border: 1px solid $richBlack;
 			border-radius: 10px;
-			color: $snow;
+			color: $richBlack;
 			padding: 1rem 2rem;
 		}
 		.submitButton {
-			background-color: #fff;
-			color: $lapis;
+			background-color: $richBlack;
+			color: $snow;
 			font-weight: 500;
 			border-radius: 5px;
 			height: 100%;
 			&:hover {
-				background-color: darken(#fff, 10%);
+				background-color: lighten($richBlack, 10%);
 			}
 		}
 		.disabledButton {
-			background-color: #fff;
-			color: $lapis;
+			background-color: $richBlack;
+			color: $snow;
 			font-weight: 500;
 			border-radius: 5px;
 			opacity: 0.5;
@@ -45,10 +48,8 @@
 		}
 		.loadingContainer {
 			margin: 0 auto;
-			height: 4rem;
-			width: 4rem;
 			.spinner {
-				stroke: #fff;
+				stroke: $richBlack;
 			}
 		}
 	}

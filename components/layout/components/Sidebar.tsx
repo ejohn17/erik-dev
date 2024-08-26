@@ -1,36 +1,51 @@
 import classes from './styles/Sidebar.module.scss'
 import cn from 'classnames'
 
-import IconButton from 'components/common/IconButton'
 import SidebarItem from './components/SidebarItem'
 
 import { MdHome } from 'react-icons/md'
 import { ImYoutube2 } from 'react-icons/im'
 import { BsTranslate } from 'react-icons/bs'
+import { useEffect, useState } from 'react'
 
 interface SidebarProps {
 	open: boolean
+	closeMenu: () => void
 }
 
-const Sidebar = ({ open }: SidebarProps): JSX.Element => {
+const Sidebar = ({ open, closeMenu }: SidebarProps): JSX.Element => {
+	const [hasBeenOpened, setHasBeenOpened] = useState<boolean>(false)
+
+	useEffect(() => {
+		if (open && !hasBeenOpened) {
+			setHasBeenOpened(true)
+		}
+	}, [hasBeenOpened, open])
+
 	return (
 		<>
-			<div className={cn(classes.sidebarRoot, open ? classes.sidebarOpen : classes.sidebarClosed)}>
+			<div
+				className={cn(
+					classes.sidebarRoot,
+					open ? classes.sidebarOpen : hasBeenOpened ? classes.sidebarClosed : classes.sidebarDefault,
+				)}
+				onClick={(e) => e.stopPropagation()}
+			>
 				<div className={classes.pageSection}>
-					<SidebarItem text="Home" icon={<MdHome />} path="/" />
+					<SidebarItem text="Home" icon={<MdHome />} path="/" closeMenu={closeMenu} />
 				</div>
 				<div className={cn(classes.divider, classes.sectionDivider)}>
 					<p className={classes.subtitle}>Exercises</p>
 				</div>
 				<div className={classes.pageSection}>
-					<SidebarItem text="Youtube to Mp3" icon={<ImYoutube2 />} path="/youtube-to-mp3" />
+					<SidebarItem text="Youtube to Mp3" icon={<ImYoutube2 />} path="/youtube-to-mp3" closeMenu={closeMenu} />
 					<SidebarItem
 						text="Caption Generator"
-						icon={<BsTranslate style={{ width: '2rem', height: '2rem' }} />}
+						icon={<BsTranslate />}
 						path="/caption-generator"
+						closeMenu={closeMenu}
 					/>
 				</div>
-				<div className={classes.verticalBorder} />
 			</div>
 		</>
 	)

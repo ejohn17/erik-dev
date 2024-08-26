@@ -138,6 +138,7 @@ const Captions = (): JSX.Element => {
 									options={languages.map((lang) => ({ value: lang.code, label: lang.label }))}
 									value={currentLanguage}
 									onChange={handleSelectLang}
+									className={classes.selector}
 								/>
 							</div>
 							<button onClick={clearVideo}>
@@ -162,11 +163,10 @@ const Captions = (): JSX.Element => {
 				) : (
 					<div className={classes.seoContent}>
 						<p>
-							This is a simple tool for you to use in order to take any Youtube video that you find and turn that videos
-							audio into a downloadable mp3 file. This tool makes use of the youtubedl npm package in order to grab
-							important information from a given youtube video such as the title and thumbnail and returnt that to the
-							client to display. From there we can decide if this video is what we want to download and use the data
-							returned from the package in order to download our new Mp3 file.
+							This is a simple tool for you to use in order to take any Youtube video and grab the captions from the
+							video. With those captions you can then translate them to any language you would like and see the
+							translated captions directly on the site on the video player. Alternatively you can also download the
+							youtube video with any captions you have generated added as optional captions in the downloaded video.
 						</p>
 						<p>
 							This tool makes use of a Google Cloud NoSQL Database in order to store the information returned from the
@@ -176,7 +176,7 @@ const Captions = (): JSX.Element => {
 							automatically uploaded to Firebase Cloud Storage at the time of upload request and then the request to
 							download will use the provided cloud url.
 						</p>
-						<p>Follow these steps to download a Youtube video</p>
+						<p>Follow these steps to generate captions for a Youtube video</p>
 						<ol>
 							<li>Go to youtube and find the video you would like to download.</li>
 							<li>
@@ -185,7 +185,8 @@ const Captions = (): JSX.Element => {
 							</li>
 							<li>Paste the copied URL into the input field on this page and then click the upload button.</li>
 							<li>
-								Once the video finishes uploading click the download button and your new Mp4 file will be available!
+								Once the video finishes uploading select the language you would like to generate captions for and then
+								press the generate button.
 							</li>
 						</ol>
 					</div>

@@ -1,12 +1,15 @@
 @import 'styles/_variables';
 .sidebarRoot {
 	background-color: $richBlack;
-	transition: width 0.5s;
 	z-index: 3;
 	display: flex;
 	flex-direction: column;
 	overflow-x: hidden;
-	position: relative;
+	position: absolute;
+	top: -20px;
+	left: 55px;
+	border: 1px solid $snow;
+	animation-fill-mode: forwards;
 	.verticalBorder {
 		width: 1px;
 		background-color: transparentize($snow, 0.5);
@@ -35,20 +38,69 @@
 		}
 	}
 	.sectionDivider {
-		margin-top: 3rem;
+		margin-top: 0.5rem;
 		padding: 0 2rem;
 		background-clip: content-box;
+		font-size: 16px;
 	}
 	.pageSection {
 		padding: 2rem 0;
 	}
 }
-.sidebarOpen {
-	width: 30rem;
-	.verticalBorder {
+@keyframes openMenu {
+	0% {
+		width: 10rem;
+		height: 10rem;
+		opacity: 0;
+		pointer-events: none;
+	}
+	100% {
+		width: 20rem;
+		height: 25rem;
 		opacity: 1;
 	}
 }
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+.sidebarOpen {
+	animation: openMenu 0.3s;
+	animation-fill-mode: forwards;
+	div {
+		opacity: 0;
+	}
+	div {
+		animation: fadeIn 0.4s;
+		animation-delay: 0.3s;
+		animation-fill-mode: forwards;
+	}
+}
+@keyframes closeMenu {
+	0% {
+		width: 20rem;
+		height: 25rem;
+		opacity: 1;
+	}
+	100% {
+		width: 10rem;
+		height: 10rem;
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+
 .sidebarClosed {
-	width: 0rem;
+	animation: closeMenu 0.3s;
+	animation-fill-mode: forwards;
+}
+.sidebarDefault {
+	width: 10rem;
+	height: 10rem;
+	opacity: 0;
+	pointer-events: none;
 }

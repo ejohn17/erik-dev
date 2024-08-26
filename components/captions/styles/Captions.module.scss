@@ -2,12 +2,12 @@
 
 .root {
 	background-color: $richBlack;
-	padding: 3rem;
+	padding: 3rem 1rem 6rem;
 	height: 100%;
 	overflow: auto;
 	.content {
 		max-width: 80rem;
-		width: 100%;
+		width: 95%;
 		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
@@ -33,6 +33,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: 2rem;
+			font-size: 16px;
 			ol {
 				padding-left: 1.5rem;
 				display: flex;
@@ -55,53 +56,6 @@
 			.videoPlayer {
 				width: 100%;
 			}
-			.videoActions {
-				display: flex;
-				max-width: 40rem;
-				width: 100%;
-				gap: 2.5rem;
-				display: flex;
-				align-items: center;
-				margin-top: 2rem;
-				button {
-					flex: 1 1 0px;
-					padding: 1rem;
-					border-radius: 10px;
-					white-space: nowrap;
-					font-style: 1.8rem;
-					font-weight: 600;
-					border: 2px solid #fff;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					svg {
-						width: 20px;
-						height: 20px;
-						margin-left: 0.3rem;
-					}
-					.spinner {
-						stroke: #fff;
-						margin-left: 0.3rem;
-						margin-top: 0.2rem;
-					}
-				}
-				button:first-child {
-					color: #fff;
-					svg {
-						margin-top: 0.2rem;
-					}
-					&:hover {
-						background-color: #ffffff08;
-					}
-				}
-				button:last-child {
-					background-color: #fff;
-					color: $richBlack;
-					&:hover {
-						background-color: darken(#fff, 5%);
-					}
-				}
-			}
 			.videoWrapper {
 				position: relative;
 				.caption {
@@ -123,6 +77,11 @@
 					}
 				}
 			}
+			@media screen and (max-width: $md) {
+				h3 {
+					font-size: 1.6rem;
+				}
+			}
 		}
 		.videoActions {
 			display: flex;
@@ -136,8 +95,8 @@
 			button {
 				width: 100%;
 				flex: 1 1 0px;
-				padding: 1rem;
-				border-radius: 10px;
+				padding: 0.5rem;
+				border-radius: 4px;
 				white-space: nowrap;
 				font-style: 1.8rem;
 				font-weight: 600;
@@ -184,6 +143,30 @@
 						pointer-events: none;
 						opacity: 0.4;
 					}
+				}
+				.selector {
+					height: 100%;
+				}
+			}
+			@media screen and (max-width: $md) {
+				display: flex;
+				flex-direction: column;
+				width: auto;
+				margin: 0;
+				gap: 1.5rem;
+				.languageSelection {
+					display: flex;
+					flex-direction: column-reverse;
+					button {
+						width: 100%;
+					}
+					.selector {
+						width: 100%;
+						font-size: 18px;
+					}
+				}
+				button {
+					width: 100%;
 				}
 			}
 		}
