@@ -7,12 +7,14 @@ RUN apt-get install yarn -y
 RUN apt-get install -y \
     bash \
     rsync \
-    openssh-client 
-
-RUN wget https://www.python.org/ftp/python/3.10.8/Python-3.10.8.tgz 
-RUN tar xzf Python-3.10.8.tgz
-RUN ./Python-3.10.8/configure --enable-optimizations
-RUN make altinstall 
+    openssh-client \
+    wget \
+    python3 \
+    python3-pip \
+    ffmpeg \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3 100 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app

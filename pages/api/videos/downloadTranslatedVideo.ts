@@ -100,7 +100,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				.save(convertedVideo)
 				.on('end', resolve)
 				.on('error', (error) => {
-					console.log('Error Code:', error.code)
 					console.log('Error Message:', error.message)
 					console.log('Error Stack:', error.stack)
 					reject(error)
