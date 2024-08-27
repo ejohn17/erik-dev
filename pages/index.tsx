@@ -1,3 +1,15 @@
-import Home from "components/home/Home";
+import Home from 'components/home/Home'
+import Head from 'next/head'
 
-export default Home;
+const HomePage = () => {
+	return (
+		<>
+			<Head>
+				<title>Erik Johnston</title>
+			</Head>
+			<Home />
+		</>
+	)
+}
+
+export default HomePage
