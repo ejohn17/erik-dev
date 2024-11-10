@@ -1,7 +1,3 @@
-import classes from './styles/Slider.module.scss'
-
-import cn from 'classnames'
-
 interface SliderProps {
 	value: string
 	options: {

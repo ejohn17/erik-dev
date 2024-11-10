@@ -8,9 +8,17 @@ interface SliderProps {
 	className?: string
 	onChange: (val: number) => void
 	onChangeComitted?: (val: number) => void
+	dataTestId?: string
 }
 
-const Slider = ({ value, className, progressBar, onChange, onChangeComitted }: SliderProps): JSX.Element => {
+const Slider = ({
+	value,
+	className,
+	progressBar,
+	onChange,
+	onChangeComitted,
+	dataTestId,
+}: SliderProps): JSX.Element => {
 	return (
 		<div className={cn(classes.slideContainer, className)}>
 			<span
@@ -29,6 +37,8 @@ const Slider = ({ value, className, progressBar, onChange, onChangeComitted }: S
 						? (e: React.MouseEvent<HTMLInputElement>) => onChangeComitted(parseInt(e.currentTarget.value))
 						: undefined
 				}
+				data-testid={dataTestId}
+				role="slider"
 			/>
 		</div>
 	)

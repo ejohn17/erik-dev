@@ -132,26 +132,32 @@ const VideoPlayer = ({ url, className, videoRef, timeElapsed, setTime }: VideoPr
 	return (
 		<div className={cn(className, classes.root)} ref={wrapperRef} onDoubleClick={toggleFullscreen}>
 			<div className={classes.backdrop} onClick={togglePlay} />
-			<video src={url} ref={videoRef} onLoadedMetadata={(event) => setTotalDuration(event.currentTarget.duration)} />
+			<video
+				src={url}
+				ref={videoRef}
+				onLoadedMetadata={(event) => setTotalDuration(event.currentTarget.duration)}
+				role="video"
+			/>
 			<div className={classes.controls}>
 				<Slider
 					className={classes.progressBar}
 					progressBar
 					value={(timeElapsed / videoRef.current?.duration) * 100 ?? 0}
 					onChange={handleSeek}
+					dataTestId="progress"
 				/>
 				<div className={classes.leftControls}>
-					<IconButton onClick={togglePlay} className={classes.playButton}>
+					<IconButton onClick={togglePlay} className={classes.playButton} aria-label={playing ? 'pause' : 'play'}>
 						{playing ? <MdPause /> : <MdPlayArrow />}
 					</IconButton>
 					<div className={classes.volumeContainer}>
-						<Slider value={volume} onChange={handleChangeVolume} />
+						<Slider value={volume} onChange={handleChangeVolume} dataTestId="volume" />
 					</div>
 					<p>
 						{minutes}:{seconds} / {totalM}:{totalS}
 					</p>
 				</div>
-				<IconButton className={classes.fullscreenButton} onClick={toggleFullscreen}>
+				<IconButton className={classes.fullscreenButton} onClick={toggleFullscreen} data-testid="fullscreen">
 					{screenfull.isFullscreen ? <MdOutlineFullscreenExit /> : <MdOutlineFullscreen />}
 				</IconButton>
 			</div>

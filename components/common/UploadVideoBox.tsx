@@ -35,7 +35,6 @@ const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAu
 		axios
 			.post('/api/videos/youtubeUpload', { youtubeURL })
 			.then((resp) => {
-				console.log('????????', resp)
 				setVideoTitle(resp.data.title)
 				setDownloadURL(resp.data.downloadURL)
 				if (!!setVideoCaptions) {
@@ -60,7 +59,7 @@ const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAu
 				/>
 				{loading ? (
 					<div className={classes.loadingContainer}>
-						<Spinner className={classes.spinner} />
+						<Spinner className={classes.spinner} data-testid="spinner" />
 					</div>
 				) : (
 					<button className={!isValidURL ? classes.disabledButton : classes.submitButton} onClick={uploadVideo}>
