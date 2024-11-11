@@ -25,7 +25,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 
 # Install production dependencies.
-RUN npm install --only=production
+RUN yarn install
 
 # Copy local code to the container image.
 COPY . ./
