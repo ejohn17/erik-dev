@@ -35,11 +35,28 @@ jobs:
       run: |
         gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
-    # Build and Push Container
-    - name: Build and Push Container
+    # Try alternative authentication method
+    - name: Docker Auth
       run: |
-        docker build -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
-        docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+        # Authenticate with a more specific scope
+        gcloud auth configure-docker us-west1-docker.pkg.dev --quiet
+        
+        # Get token directly
+        echo "$(gcloud auth print-access-token)" | docker login -u oauth2accesstoken --password-stdin us-west1-docker.pkg.dev
+
+    # Split build and push for better error visibility
+    - name: Build Container
+      run: |
+        docker build -t us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
+
+    # Add retries and verbose logging to push
+    - name: Push Container
+      run: |
+        for i in 1 2 3; do
+          echo "Push attempt $i..."
+          docker push us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} && break
+          sleep 10
+        done
 
     # Deploy to Cloud Run
     - name: Deploy to Cloud Run
@@ -47,7 +64,7 @@ jobs:
       with:
         service: ${{ env.SERVICE_NAME }}
         region: ${{ env.REGION }}
-        image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
+        image: us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         memory: 256Mi
         min_instances: 0
         max_instances: 10
