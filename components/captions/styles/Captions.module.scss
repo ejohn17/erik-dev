@@ -2,9 +2,9 @@
 
 .root {
 	background-color: $richBlack;
-	padding: 3rem 1rem 6rem;
-	height: 100%;
-	overflow: auto;
+	padding: 4rem 2rem 8rem;
+	min-height: 100%;
+	overflow-y: auto;
 	.content {
 		max-width: 80rem;
 		width: 95%;
@@ -14,31 +14,32 @@
 		.title {
 			color: $snow;
 			text-align: center;
-			margin-bottom: 4rem;
+			margin-bottom: 5rem;
 			margin-top: 2rem;
-			font-size: 3rem;
+			font-size: 3.2rem;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			font-weight: 500;
+			font-weight: 600;
 			svg {
-				width: 4rem;
-				height: 4rem;
-				margin-right: 1.5rem;
+				width: 4.5rem;
+				height: 4.5rem;
+				margin-right: 2rem;
 			}
 		}
 		.seoContent {
-			margin-top: 6rem;
+			margin-top: 7rem;
 			color: $snow;
 			display: flex;
 			flex-direction: column;
-			gap: 2rem;
-			font-size: 16px;
+			gap: 2.5rem;
+			font-size: 1.1rem;
+			line-height: 1.6;
 			ol {
-				padding-left: 1.5rem;
+				padding-left: 2rem;
 				display: flex;
 				flex-direction: column;
-				gap: 1.5rem;
+				gap: 2rem;
 			}
 		}
 		.loadedVideo {
@@ -47,101 +48,108 @@
 			align-items: center;
 			h3 {
 				color: $snow;
-				margin-bottom: 2rem;
-				margin-top: 2rem;
-				font-size: 2rem;
-				font-weight: 500;
+				margin-bottom: 2.5rem;
+				margin-top: 2.5rem;
+				font-size: 2.2rem;
+				font-weight: 600;
 				align-self: flex-start;
 			}
 			.videoPlayer {
 				width: 100%;
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 			}
 			.videoWrapper {
 				position: relative;
 				.caption {
 					position: absolute;
-					background-color: transparentize($richBlack, 0.2);
-					bottom: 2rem;
+					background-color: rgba($richBlack, 0.85);
+					backdrop-filter: blur(4px);
+					bottom: 2.5rem;
 					left: 50%;
 					transform: translateX(-50%);
-					color: #fff;
-					transition: all 0.5s;
+					color: $snow;
+					transition: all 0.3s ease;
 					z-index: 10;
-					font-size: 1.6rem;
-					padding: 0.2rem 1rem;
-					border-radius: 5px;
+					font-size: 1.7rem;
+					padding: 0.5rem 1.5rem;
+					border-radius: 8px;
+					box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 				}
 				&:hover {
 					.caption {
-						bottom: 7rem;
+						bottom: 8rem;
 					}
 				}
 			}
 			@media screen and (max-width: $md) {
 				h3 {
-					font-size: 1.6rem;
+					font-size: 1.8rem;
 				}
 			}
 		}
 		.videoActions {
-			display: flex;
-			width: 100%;
-			gap: 2.5rem;
 			display: grid;
+			width: 100%;
+			gap: 3rem;
 			grid-template-columns: 2fr 1fr;
 			align-items: center;
 			margin: 0 auto;
-			padding-top: 1.5rem;
+			padding-top: 2rem;
 			button {
 				width: 100%;
 				flex: 1 1 0px;
 				padding: 0.5rem;
-				border-radius: 4px;
+				border-radius: 8px;
 				white-space: nowrap;
-				font-style: 1.8rem;
+				font-size: 1.1rem;
 				font-weight: 600;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 10rem;
-				margin-left: auto;
-
-				border: 2px solid #fff;
-				background-color: transparent;
-				color: #fff;
 				width: 15rem;
+				margin-left: auto;
+				border: 2px solid $snow;
+				background-color: transparent;
+				color: $snow;
+				transition: all 0.2s ease;
 				&:hover {
-					background-color: #ffffff08;
+					background-color: rgba($snow, 0.1);
+					transform: translateY(-2px);
 				}
 				svg {
-					width: 20px;
-					height: 20px;
-					margin-left: 0.3rem;
+					width: 22px;
+					height: 22px;
+					margin-left: 0.5rem;
 				}
 			}
 			.languageSelection {
 				width: 100%;
 				flex: 1 1 0px;
 				display: grid;
-				gap: 1.5rem;
+				gap: 2rem;
 				grid-template-columns: min-content 1fr;
 				align-items: center;
 				button {
-					border: 2px solid #fff;
-					background-color: #fff;
+					border: 2px solid $snow;
+					background-color: $snow;
 					color: $richBlack;
 					width: 15rem;
+					transition: all 0.2s ease;
 					&:hover {
-						background-color: darken(#fff, 5%);
+						background-color: darken($snow, 8%);
+						transform: translateY(-2px);
 					}
 					.spinner {
 						stroke: $richBlack;
-						margin-left: 0.3rem;
+						margin-left: 0.5rem;
 						margin-top: 0.2rem;
 					}
 					&.disabled {
 						pointer-events: none;
-						opacity: 0.4;
+						opacity: 0.5;
+						transform: none;
 					}
 				}
 				.selector {
@@ -153,7 +161,7 @@
 				flex-direction: column;
 				width: auto;
 				margin: 0;
-				gap: 1.5rem;
+				gap: 2rem;
 				.languageSelection {
 					display: flex;
 					flex-direction: column-reverse;
@@ -162,7 +170,7 @@
 					}
 					.selector {
 						width: 100%;
-						font-size: 18px;
+						font-size: 1.15rem;
 					}
 				}
 				button {

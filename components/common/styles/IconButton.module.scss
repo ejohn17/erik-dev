@@ -1,5 +1,26 @@
 .button {
-    &:hover, &:focus {
-        opacity: 0.9;
-    }
+	cursor: pointer;
+	padding: 0.5rem;
+	border: none;
+	background: transparent;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.2s ease;
+
+	svg {
+		width: 1.5rem;
+		height: 1.5rem;
+		transition: transform 0.2s ease;
+	}
+
+	&:hover,
+	&:focus {
+		background-color: rgba(0, 0, 0, 0.05);
+		transform: translateY(1px);
+		svg {
+			transform: scale(1.1);
+		}
+	}
 }

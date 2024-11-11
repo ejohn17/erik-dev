@@ -36,6 +36,9 @@ const Captions = (): JSX.Element => {
 	const clearVideo = useCallback(() => {
 		setDownloadURL('')
 		setVideoTitle('')
+		setTranslatedCaptions({})
+		setDownloading(false)
+		setVideoCaptions(null)
 	}, [])
 
 	const handleSelectLang = useCallback((lang) => setCurrentLanguage(lang), [])

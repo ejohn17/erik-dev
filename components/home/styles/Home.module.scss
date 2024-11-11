@@ -2,7 +2,7 @@
 .root {
 	background-color: $snow;
 	.introduction {
-		background: linear-gradient(46.6deg, $richBlack 62.7%, $snow 33%);
+		background: linear-gradient(46.6deg, $richBlack 0%, lighten($richBlack, 10%) 62.7%, $snow 33%);
 		@media screen and (max-width: $md) {
 			background: linear-gradient(46.6deg, $richBlack 68%, $snow 33%);
 		}
@@ -22,19 +22,40 @@
 					color: $snow;
 					.name {
 						font-size: 1.2em;
+						@media screen and (max-width: $md) {
+							font-size: 1.4em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 1.6em;
+						}
 					}
 					h1 {
 						font-size: 2.8em;
+						@media screen and (max-width: $md) {
+							font-size: 3.2em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 3.5em;
+						}
 					}
 					p {
 						margin-top: 2em;
 						font-size: 1.3em;
+						line-height: 1.6;
+						opacity: 0.9;
+						@media screen and (max-width: $md) {
+							font-size: 1.5em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 1.7em;
+						}
 					}
 				}
 				.headshot {
 					width: 20em;
 					height: 21em;
 					border: 2px $richBlack solid;
+					box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 					img {
 						margin-top: 2em;
 						margin-left: -2em;
@@ -43,11 +64,11 @@
 				@media screen and (max-width: $md) {
 					.hookInfo {
 						h1 {
-							font-size: 3em;
+							font-size: 3.2em;
 						}
 						p {
 							margin-top: 1em;
-							font-size: 2em;
+							font-size: 1.8em;
 						}
 					}
 				}
@@ -60,14 +81,25 @@
 				gap: 4rem;
 				.tag {
 					font-size: 0.9em;
+					padding: 0.5rem 1.5rem;
+					background: rgba($snow, 0.1);
+					border-radius: 20px;
+					transition: all 0.2s ease;
+					&:hover {
+						background: rgba($snow, 0.2);
+						transform: translateY(-2px);
+					}
+					@media screen and (max-width: $md) {
+						font-size: 1.2em;
+					}
+					@media screen and (max-width: $sm) {
+						font-size: 1.4em;
+					}
 				}
 				@media screen and (max-width: $md) {
 					width: 55em;
 					gap: 2rem;
 					margin-top: 1.5em;
-					.tag {
-						font-size: 1.4em;
-					}
 				}
 			}
 		}
@@ -75,65 +107,67 @@
 	.skills {
 		width: 80%;
 		margin: 0 auto;
-		padding: 4rem 0;
+		padding: 4em 0;
 		background: $snow;
 
 		@media screen and (max-width: $md) {
 			width: 90%;
-			padding: 3rem 0;
+			padding: 3em 0;
 		}
 
 		.skillsContent {
 			margin: 0 auto;
 
 			h2 {
-				margin-bottom: 2rem;
-				font-size: 2.5rem;
+				margin-bottom: 2em;
+				font-size: 2.5em;
 
 				@media screen and (max-width: $md) {
-					font-size: 3rem;
+					font-size: 2.8em;
 				}
 
 				@media screen and (max-width: $sm) {
-					font-size: 2.5rem;
+					font-size: 3em;
 				}
 			}
 
 			.skillCategories {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-				gap: 2rem;
+				gap: 2em;
 
 				@media screen and (max-width: $md) {
 					grid-template-columns: 1fr;
-					gap: 1.5rem;
+					gap: 1.5em;
 				}
 
 				.skillCategory {
 					background: white;
-					padding: 2rem;
-					border-radius: 8px;
-					box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-					transition: transform 0.2s ease;
-
+					padding: 2em;
+					border-radius: 12px;
+					box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+					transition: transform 0.3s ease;
+					border-left: 4px solid $richBlack;
 					&:hover {
 						transform: translateY(-5px);
+						box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 					}
 
 					@media screen and (max-width: $md) {
-						padding: 1.5rem;
+						padding: 1.5em;
 					}
 
 					h3 {
 						color: #2d3748;
-						margin-bottom: 1rem;
+						margin-bottom: 1em;
+						font-size: 1.4em;
 
 						@media screen and (max-width: $md) {
-							font-size: 1.8rem;
+							font-size: 1.6em;
 						}
 
 						@media screen and (max-width: $sm) {
-							font-size: 1.6rem;
+							font-size: 1.8em;
 						}
 					}
 
@@ -142,16 +176,23 @@
 						padding: 0;
 
 						li {
-							margin: 0.5rem 0;
+							margin: 0.5em 0;
 							color: #4a5568;
+							padding: 0.8em 0;
+							border-bottom: 1px solid rgba($richBlack, 0.1);
+							font-size: 1em;
 
 							@media screen and (max-width: $md) {
-								font-size: 1.4rem;
-								margin: 0.8rem 0;
+								font-size: 1.2em;
+								margin: 0.8em 0;
 							}
 
 							@media screen and (max-width: $sm) {
-								font-size: 1.2rem;
+								font-size: 1.4em;
+							}
+
+							&:last-child {
+								border-bottom: none;
 							}
 						}
 					}
@@ -165,7 +206,7 @@
 			margin: 0 auto;
 			display: flex;
 			padding: 5em 0 5em;
-			gap: 7rem;
+			gap: 7em;
 			align-items: center;
 			@media screen and (max-width: $md) {
 				width: 90%;
@@ -177,9 +218,23 @@
 				gap: 2em;
 				h2 {
 					font-size: 3em;
+					@media screen and (max-width: $md) {
+						font-size: 3.2em;
+					}
+					@media screen and (max-width: $sm) {
+						font-size: 3.5em;
+					}
 				}
 				p {
 					font-size: 1.2em;
+					line-height: 1.6;
+					opacity: 0.9;
+					@media screen and (max-width: $md) {
+						font-size: 1.4em;
+					}
+					@media screen and (max-width: $sm) {
+						font-size: 1.6em;
+					}
 				}
 			}
 			.kelowna {
@@ -187,6 +242,7 @@
 				width: 35em;
 				height: 35em;
 				margin-left: auto;
+				box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 				img {
 					width: 100%;
 					margin-top: 2em;
@@ -194,22 +250,11 @@
 				}
 			}
 			@media screen and (max-width: $md) {
-				gap: 3rem;
-				.information {
-					h2 {
-						font-size: 3em;
-					}
-					p {
-						font-size: 1.4em;
-					}
-				}
+				gap: 3em;
 			}
 			@media screen and (max-width: $sm) {
 				.information {
 					max-width: none;
-					p {
-						font-size: 1.8em;
-					}
 				}
 				.kelownaContainer {
 					display: none;
@@ -217,8 +262,105 @@
 			}
 		}
 	}
+
+	.cta {
+		padding: 6em 2em;
+		background: linear-gradient(135deg, $richBlack 0%, lighten($richBlack, 10%) 100%);
+		margin-top: 4em;
+
+		.ctaContent {
+			max-width: 800px;
+			margin: 0 auto;
+			text-align: center;
+
+			h2 {
+				font-size: 3.5em;
+				color: $snow;
+				margin-bottom: 1.5em;
+				font-weight: 600;
+
+				@media screen and (max-width: $md) {
+					font-size: 3.8em;
+				}
+
+				@media screen and (max-width: $sm) {
+					font-size: 4em;
+				}
+			}
+
+			p {
+				color: rgba($snow, 0.8);
+				font-size: 1.8em;
+				margin-bottom: 3em;
+				line-height: 1.6;
+
+				@media screen and (max-width: $md) {
+					font-size: 2em;
+				}
+
+				@media screen and (max-width: $sm) {
+					font-size: 2.2em;
+				}
+			}
+
+			.ctaButtons {
+				display: flex;
+				gap: 2em;
+				justify-content: center;
+
+				@media screen and (max-width: $sm) {
+					flex-direction: column;
+					align-items: center;
+					gap: 1em;
+				}
+
+				button {
+					padding: 1em 2.5em;
+					font-size: 1.6em;
+					font-weight: 500;
+					border-radius: 8px;
+					transition: all 0.3s ease;
+					min-width: 180px;
+
+					@media screen and (max-width: $md) {
+						font-size: 1.8em;
+					}
+
+					@media screen and (max-width: $sm) {
+						width: 100%;
+						min-width: 220px;
+						font-size: 2em;
+					}
+				}
+
+				.primaryButton {
+					background: $snow;
+					color: $richBlack;
+					border: none;
+					box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+					&:hover {
+						background: darken($snow, 8%);
+						transform: translateY(-2px);
+						box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+					}
+				}
+
+				.secondaryButton {
+					background: transparent;
+					color: $snow;
+					border: 2px solid $snow;
+
+					&:hover {
+						background: rgba($snow, 0.1);
+						transform: translateY(-2px);
+					}
+				}
+			}
+		}
+	}
 	.apps {
-		background: $richBlack;
+		background: linear-gradient(135deg, $richBlack 0%, lighten($richBlack, 10%) 100%);
 		.appsContent {
 			width: 80%;
 			margin: 0 auto;
@@ -229,34 +371,60 @@
 				width: 90%;
 			}
 			.heading {
+				color: $snow;
 				h2 {
-					color: $snow;
 					font-size: 3em;
-				}
-				@media screen and (max-width: $sm) {
-					h2 {
-						font-size: 5em;
+					@media screen and (max-width: $md) {
+						font-size: 3.5em;
+					}
+					@media screen and (max-width: $sm) {
+						font-size: 4em;
 					}
 				}
 			}
 			.exercises {
 				margin-top: 4em;
 				display: flex;
-				gap: 4rem;
+				gap: 4em;
 				.exercise {
-					border: 2px solid $snow;
+					border: 2px solid rgba($snow, 0.2);
+					border-radius: 12px;
 					flex: 1 1 0px;
 					color: $snow;
 					padding: 2em;
 					display: flex;
 					flex-direction: column;
 					gap: 1em;
+					transition: all 0.3s ease;
+					background: rgba($snow, 0.05);
+					box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+					&:hover:not(.disabled) {
+						transform: translateY(-5px);
+						border-color: rgba($snow, 0.3);
+						box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+					}
+
 					h3 {
 						font-size: 1.4em;
+						@media screen and (max-width: $md) {
+							font-size: 1.8em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 2.2em;
+						}
 					}
 					p {
 						font-size: 0.9em;
 						flex-grow: 1;
+						line-height: 1.6;
+						opacity: 0.9;
+						@media screen and (max-width: $md) {
+							font-size: 1.2em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 1.6em;
+						}
 					}
 					button {
 						margin-top: 3em;
@@ -264,12 +432,13 @@
 						width: 10em;
 						border: 2px solid $snow;
 						font-size: 1.2em;
-						line-height: 1.2em;
+						line-height: 1.2;
 						padding: 0.5em;
+						border-radius: 8px;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						transition: color 0.5s, background-color 0.5s;
+						transition: all 0.3s ease;
 						svg {
 							position: relative;
 							top: 1px;
@@ -277,53 +446,31 @@
 							font-size: 1.5em;
 						}
 						&.disabled {
-							cursor: default;
+							cursor: not-allowed;
 							opacity: 0.4;
 						}
 						&:hover:not(.disabled) {
 							background-color: $snow;
 							color: $richBlack;
+							transform: translateY(-2px);
+						}
+						@media screen and (max-width: $md) {
+							font-size: 1.6em;
+						}
+						@media screen and (max-width: $sm) {
+							font-size: 2em;
+							width: 13em;
 						}
 					}
 				}
 				@media screen and (max-width: $md) {
-					gap: 2rem;
-					.exercise {
-						h3 {
-							font-size: 1.6em;
-						}
-						p {
-							font-size: 1.2em;
-						}
-						button {
-							width: 100%;
-							font-size: 1.4em;
-							line-height: 1.4em;
-							svg {
-								font-size: 1.7em;
-							}
-						}
-					}
+					gap: 2em;
 				}
 				@media screen and (max-width: $sm) {
 					flex-direction: column;
-					gap: 2rem;
+					gap: 2em;
 					.exercise {
 						padding: 3em;
-						h3 {
-							font-size: 2.6em;
-						}
-						p {
-							font-size: 2.2em;
-						}
-						button {
-							width: 13em;
-							font-size: 2em;
-							line-height: 1.6em;
-							svg {
-								font-size: 2em;
-							}
-						}
 					}
 				}
 			}

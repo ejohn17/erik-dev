@@ -3,21 +3,58 @@
 	display: grid;
 	grid-template-rows: 3.5rem minmax(0, 1fr);
 	height: 100vh;
+	min-height: 100vh;
+	background: $snow;
+	overflow-x: hidden;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba($richBlack, 0.3) transparent;
+
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba($richBlack, 0.3);
+		border-radius: 4px;
+	}
 	.header {
-		background-color: $richBlack;
-		border-bottom: 1px solid #ffffff90;
+		background: linear-gradient(135deg, $richBlack 0%, lighten($richBlack, 10%) 100%);
+		border-bottom: 1px solid rgba($snow, 0.2);
 		display: flex;
 		align-items: center;
-		padding: 0.5rem 1rem;
+		justify-content: space-between;
+		padding: 0.8rem 2rem;
 		z-index: 1;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 		.menuButton {
+			cursor: pointer;
+			padding: 0.5rem;
+			border-radius: 4px;
+			transition: background-color 0.2s ease;
+
+			&:hover {
+				background-color: rgba($snow, 0.1);
+			}
+
 			svg {
 				fill: $snow;
 				width: 2rem;
 				height: 2rem;
+				transition: transform 0.2s ease;
+			}
+
+			&:hover svg {
+				transform: scale(1.1);
 			}
 		}
 	}
+
 	.main {
 		position: relative;
 	}

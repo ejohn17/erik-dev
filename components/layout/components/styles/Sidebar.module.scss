@@ -8,7 +8,9 @@
 	position: absolute;
 	top: -20px;
 	left: 55px;
-	border: 1px solid $snow;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 	animation-fill-mode: forwards;
 	.verticalBorder {
 		width: 1px;
@@ -24,8 +26,8 @@
 	.divider {
 		width: 100%;
 		height: 1px;
-		background-color: transparentize($snow, 0.5);
-		margin-top: 3px;
+		background-color: transparentize($snow, 0.8);
+		margin: 0.5rem 0;
 		position: relative;
 		.subtitle {
 			color: $snow;
@@ -35,6 +37,10 @@
 			opacity: 1;
 			background-color: $richBlack;
 			padding: 0.1rem 1.5rem;
+			font-size: 14px;
+			font-weight: 500;
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
 		}
 	}
 	.sectionDivider {
@@ -44,20 +50,21 @@
 		font-size: 16px;
 	}
 	.pageSection {
-		padding: 2rem 0;
+		padding: 1rem 0;
 	}
 }
 @keyframes openMenu {
 	0% {
-		width: 10rem;
-		height: 10rem;
+		width: 12rem;
+		height: 12rem;
 		opacity: 0;
-		pointer-events: none;
+		transform: translateY(-10px);
 	}
 	100% {
-		width: 20rem;
-		height: 25rem;
+		width: 22rem;
+		height: 28rem;
 		opacity: 1;
+		transform: translateY(0);
 	}
 }
 @keyframes fadeIn {

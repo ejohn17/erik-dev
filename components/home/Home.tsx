@@ -73,7 +73,20 @@ const Home = (): JSX.Element => {
 					</div>
 				</div>
 			</section>
-
+			<section className={classes.cta}>
+				<div className={classes.ctaContent}>
+					<h2>Let&apos;s Build Something Amazing Together</h2>
+					<p>Currently open to new opportunities</p>
+					<div className={classes.ctaButtons}>
+						<a href="mailto:johnstonerik17@gmail.com">
+							<button className={classes.primaryButton}>Get in Touch</button>
+						</a>
+						<a href="/files/resume.pdf" target="_blank" rel="noopener noreferrer">
+							<button className={classes.secondaryButton}>View Resume</button>
+						</a>
+					</div>
+				</div>
+			</section>
 			<section className={classes.aboutMe}>
 				<div className={classes.aboutMeContent}>
 					<div className={classes.information}>
@@ -113,7 +126,6 @@ const Home = (): JSX.Element => {
 					</div>
 				</div>
 			</section>
-
 			<section className={classes.apps}>
 				<div className={classes.appsContent}>
 					<div className={classes.heading}>

@@ -13,7 +13,6 @@ import { addHeadingZero, addMultipleHeadingZero } from '@/utilities/addHeadingZe
 import { uploadVideoArray } from '@/firebaseUtils/storage'
 
 import http from 'https'
-import { Readable } from 'stream'
 import languages from '@/utilities/languages'
 
 const buildSRT = (data: YoutubeSubtitle, idx: number): string => {
