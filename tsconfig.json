@@ -18,8 +18,7 @@
 		"paths": {
 			"@/*": ["./*"]
 		},
-		"types": ["jest", "node", "@testing-library/jest-dom"],
-		"allowImportingTsExtensions": true
+		"types": ["jest", "node", "@testing-library/jest-dom"]
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
 	"exclude": ["node_modules"]
