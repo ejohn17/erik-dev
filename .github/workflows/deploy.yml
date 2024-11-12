@@ -38,25 +38,24 @@ jobs:
     # Try alternative authentication method
     - name: Docker Auth
       run: |
-        # Authenticate with a more specific scope
-        gcloud auth configure-docker us-west1-docker.pkg.dev --quiet
+        # Get credentials for Artifact Registry
+        gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
         
-        # Get token directly
-        echo "$(gcloud auth print-access-token)" | docker login -u oauth2accesstoken --password-stdin us-west1-docker.pkg.dev
+        # Get and use access token directly
+        ACCESS_TOKEN=$(gcloud auth print-access-token)
+        echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin ${REGION}-docker.pkg.dev
+        
+        # Verify authentication
+        gcloud auth list
+        docker info
 
-    # Split build and push for better error visibility
-    - name: Build Container
+    - name: Build and Push Container
       run: |
-        docker build -t us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} .
-
-    # Add retries and verbose logging to push
-    - name: Push Container
-      run: |
-        for i in 1 2 3; do
-          echo "Push attempt $i..."
-          docker push us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }} && break
-          sleep 10
-        done
+        IMAGE_PATH="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+        echo "Building image: ${IMAGE_PATH}"
+        docker build --no-cache -t ${IMAGE_PATH} .
+        echo "Pushing image..."
+        docker push ${IMAGE_PATH}
 
     # Deploy to Cloud Run
     - name: Deploy to Cloud Run
