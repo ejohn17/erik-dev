@@ -33,17 +33,24 @@ jobs:
     # Configure docker for Artifact Registry
     - name: Configure Docker for Artifact Registry
       run: |
-        gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+        gcloud auth configure-docker us-west1-docker.pkg.dev
+
+    - name: Debug Service Account
+      run: |
+        echo "Current service account:"
+        gcloud auth list
+        echo "Current configuration:"
+        gcloud config list
 
     # Try alternative authentication method
     - name: Docker Auth
       run: |
         # Get credentials for Artifact Registry
-        gcloud auth configure-docker ${REGION}-docker.pkg.dev --quiet
+        gcloud auth configure-docker us-west1-docker.pkg.dev --quiet
         
         # Get and use access token directly
         ACCESS_TOKEN=$(gcloud auth print-access-token)
-        echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin ${REGION}-docker.pkg.dev
+        echo $ACCESS_TOKEN | docker login -u oauth2accesstoken --password-stdin us-west1-docker.pkg.dev
         
         # Verify authentication
         gcloud auth list
@@ -51,7 +58,7 @@ jobs:
 
     - name: Build and Push Container
       run: |
-        IMAGE_PATH="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+        IMAGE_PATH="us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
         echo "Building image: ${IMAGE_PATH}"
         docker build --no-cache -t ${IMAGE_PATH} .
         echo "Pushing image..."
@@ -62,7 +69,7 @@ jobs:
       uses: 'google-github-actions/deploy-cloudrun@v2'
       with:
         service: ${{ env.SERVICE_NAME }}
-        region: ${{ env.REGION }}
+        region: us-west1
         image: us-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
         memory: 256Mi
         min_instances: 0
@@ -71,9 +78,4 @@ jobs:
         timeout: 300
         allow-unauthenticated: true
 
-    - name: Debug Service Account
-      run: |
-        echo "Current service account:"
-        gcloud auth list
-        echo "Current configuration:"
-        gcloud config list
+    
