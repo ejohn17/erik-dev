@@ -70,3 +70,10 @@ jobs:
         port: 8080
         timeout: 300
         allow-unauthenticated: true
+
+    - name: Debug Service Account
+      run: |
+        echo "Current service account:"
+        gcloud auth list
+        echo "Current configuration:"
+        gcloud config list
