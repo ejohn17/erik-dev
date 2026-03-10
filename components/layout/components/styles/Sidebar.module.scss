@@ -1,113 +1,66 @@
 @import 'styles/_variables';
 .sidebarRoot {
-	background-color: $richBlack;
-	z-index: 3;
+	position: fixed;
+	top: 4.75rem;
+	left: 1.25rem;
+	width: min(22rem, calc(100vw - 2.5rem));
+	max-height: calc(100vh - 6rem);
+	padding: 1rem;
+	border: 1px solid rgba($snow, 0.16);
+	border-radius: 14px;
+	background: linear-gradient(140deg, rgba($richBlack, 0.98) 0%, rgba(lighten($richBlack, 9%), 0.96) 100%);
+	backdrop-filter: blur(10px);
+	box-shadow: 0 16px 32px rgba(0, 0, 0, 0.32);
 	display: flex;
 	flex-direction: column;
-	overflow-x: hidden;
-	position: absolute;
-	top: -20px;
-	left: 55px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
-	border-radius: 12px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-	animation-fill-mode: forwards;
-	.verticalBorder {
-		width: 1px;
-		background-color: transparentize($snow, 0.5);
-		height: 100%;
-		position: absolute;
-		right: 0;
-		padding: 2rem 0;
-		background-clip: content-box;
-		opacity: 0;
-		transition: opacity 0.5s;
-	}
+	gap: 0.25rem;
+	overflow-y: auto;
+	z-index: 5;
+	transform-origin: top left;
+	transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+
 	.divider {
 		width: 100%;
 		height: 1px;
-		background-color: transparentize($snow, 0.8);
-		margin: 0.5rem 0;
-		position: relative;
-		.subtitle {
-			color: $snow;
-			position: absolute;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			opacity: 1;
-			background-color: $richBlack;
-			padding: 0.1rem 1.5rem;
-			font-size: 14px;
-			font-weight: 500;
-			text-transform: uppercase;
-			letter-spacing: 0.05em;
-		}
+		background-color: transparentize($snow, 0.82);
+		margin: 0.15rem 0;
 	}
+
 	.sectionDivider {
-		margin-top: 0.5rem;
-		padding: 0 2rem;
-		background-clip: content-box;
-		font-size: 16px;
+		margin: 0.5rem 0;
 	}
+
 	.pageSection {
-		padding: 1rem 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
 	}
-}
-@keyframes openMenu {
-	0% {
-		width: 12rem;
-		height: 12rem;
-		opacity: 0;
-		transform: translateY(-10px);
-	}
-	100% {
-		width: 22rem;
-		height: 28rem;
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-@keyframes fadeIn {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-.sidebarOpen {
-	animation: openMenu 0.3s;
-	animation-fill-mode: forwards;
-	div {
-		opacity: 0;
-	}
-	div {
-		animation: fadeIn 0.4s;
-		animation-delay: 0.3s;
-		animation-fill-mode: forwards;
-	}
-}
-@keyframes closeMenu {
-	0% {
-		width: 20rem;
-		height: 25rem;
-		opacity: 1;
-	}
-	100% {
-		width: 10rem;
-		height: 10rem;
-		opacity: 0;
-		pointer-events: none;
+
+	.sectionTitle {
+		font-size: 0.73rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba($snow, 0.75);
+		padding: 0.25rem 0.7rem 0.5rem;
 	}
 }
 
+.sidebarOpen {
+	opacity: 1;
+	transform: translateY(0) scale(1);
+	visibility: visible;
+	pointer-events: auto;
+}
 .sidebarClosed {
-	animation: closeMenu 0.3s;
-	animation-fill-mode: forwards;
+	opacity: 0;
+	transform: translateY(-0.35rem) scale(0.98);
+	visibility: hidden;
+	pointer-events: none;
 }
 .sidebarDefault {
-	width: 10rem;
-	height: 10rem;
 	opacity: 0;
+	transform: translateY(-0.35rem) scale(0.98);
+	visibility: hidden;
 	pointer-events: none;
 }

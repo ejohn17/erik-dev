@@ -1,37 +1,53 @@
 @import 'styles/_variables';
 .sidebarItem {
 	display: grid;
-	grid-template-columns: 3rem minmax(0, 1fr);
+	grid-template-columns: 2.4rem minmax(0, 1fr);
 	align-items: center;
 	width: 100%;
-	padding: 0.75rem 1rem;
-	align-items: center;
-	background-color: $richBlack;
+	padding: 0.72rem 0.8rem;
+	background-color: transparent;
 	color: $snow;
-	fill: $snow;
-	gap: 0.5em;
-	font-size: 19px;
+	fill: currentColor;
+	gap: 0.55rem;
+	font-size: 1rem;
+	line-height: 1.2;
 	text-align: left;
-	transition: all 0.2s ease;
-	border-radius: 8px;
-	margin: 0 0.75rem;
+	transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+	border-radius: 10px;
+	text-decoration: none;
+
 	svg {
-		width: 1.5em;
-		height: 1.5em;
+		width: 1.35rem;
+		height: 1.35rem;
 		margin: 0 auto;
-		transition: transform 0.2s ease;
+		opacity: 0.9;
+		transition: transform 0.2s ease, opacity 0.2s ease;
 	}
+
 	&:hover {
-		background-color: rgba(255, 255, 255, 0.1);
-		transform: translateX(4px);
+		background-color: rgba($snow, 0.1);
+		transform: translateX(3px);
+
 		svg {
-			transform: scale(1.1);
+			transform: scale(1.06);
+			opacity: 1;
 		}
 	}
+
 	p {
 		overflow: hidden;
 		white-space: nowrap;
-		text-decoration: none;
 		font-weight: 500;
+		text-overflow: ellipsis;
+	}
+}
+
+.sidebarItemActive {
+	background: rgba($snow, 0.16);
+	color: $snow;
+	box-shadow: inset 0 0 0 1px rgba($snow, 0.2);
+
+	svg {
+		opacity: 1;
 	}
 }

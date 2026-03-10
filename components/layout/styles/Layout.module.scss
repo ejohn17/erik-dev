@@ -1,7 +1,7 @@
 @import 'styles/_variables';
 .root {
 	display: grid;
-	grid-template-rows: 3.5rem minmax(0, 1fr);
+	grid-template-rows: 4rem minmax(0, 1fr);
 	height: 100vh;
 	min-height: 100vh;
 	background: $snow;
@@ -23,35 +23,46 @@
 		border-radius: 4px;
 	}
 	.header {
-		background: linear-gradient(135deg, $richBlack 0%, lighten($richBlack, 10%) 100%);
-		border-bottom: 1px solid rgba($snow, 0.2);
+		position: sticky;
+		top: 0;
+		background: linear-gradient(135deg, rgba($richBlack, 0.95) 0%, rgba(lighten($richBlack, 10%), 0.94) 100%);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid rgba($snow, 0.16);
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		padding: 0.8rem 2rem;
-		z-index: 1;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		padding: 0 1.25rem;
+		z-index: 4;
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
 
 		.menuButton {
 			cursor: pointer;
-			padding: 0.5rem;
-			border-radius: 4px;
-			transition: background-color 0.2s ease;
+			width: 2.75rem;
+			height: 2.75rem;
+			border-radius: 10px;
+			border: 1px solid rgba($snow, 0.2);
+			background-color: rgba($snow, 0.06);
+			transition: all 0.2s ease;
 
 			&:hover {
-				background-color: rgba($snow, 0.1);
+				background-color: rgba($snow, 0.16);
+				border-color: rgba($snow, 0.35);
 			}
 
 			svg {
 				fill: $snow;
-				width: 2rem;
-				height: 2rem;
+				width: 1.6rem;
+				height: 1.6rem;
 				transition: transform 0.2s ease;
 			}
 
 			&:hover svg {
-				transform: scale(1.1);
+				transform: scale(1.08);
 			}
+		}
+
+		.menuButtonOpen {
+			background-color: rgba($snow, 0.18);
+			border-color: rgba($snow, 0.35);
 		}
 	}
 

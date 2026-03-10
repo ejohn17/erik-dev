@@ -19,7 +19,10 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
 	return (
 		<div className={classes.root}>
 			<header className={classes.header}>
-				<IconButton className={classes.menuButton} onClick={toggleSidebar}>
+				<IconButton
+					className={`${classes.menuButton} ${sidebarOpen ? classes.menuButtonOpen : ''}`}
+					onClick={toggleSidebar}
+				>
 					<MdMenu />
 				</IconButton>
 			</header>

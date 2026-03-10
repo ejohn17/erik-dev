@@ -1,6 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import SidebarItem from '../SidebarItem'
 
+jest.mock('next/router', () => ({
+	useRouter: () => ({
+		pathname: '/home',
+	}),
+}))
+
 describe('SidebarItem', () => {
 	const mockProps = {
 		icon: <span data-testid="mock-icon">🏠</span>,
