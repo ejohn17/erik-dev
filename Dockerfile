@@ -20,12 +20,11 @@ RUN apt-get install -y \
 WORKDIR /usr/src/app
 
 # Copy application dependency manifests to the container image.
-# A wildcard is used to ensure both package.json AND package-lock.json are copied.
-# Copying this separately prevents re-running npm install on every code change.
-COPY package.json ./
+# Copying this separately prevents re-running yarn install on every code change.
+COPY package.json yarn.lock ./
 
-# Install production dependencies.
-RUN yarn install
+# Install dependencies with the locked versions from yarn.lock.
+RUN yarn install --frozen-lockfile
 
 # Copy local code to the container image.
 COPY . ./
