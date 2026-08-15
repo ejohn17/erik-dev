@@ -1,30 +1,25 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
 import Spinner from '../Spinner'
 
 describe('Spinner', () => {
-	it('renders correctly with custom className', () => {
-		const customClass = 'custom-spinner'
-		const { container } = render(<Spinner className={customClass} />)
+	it('exposes a status role with an accessible name', () => {
+		render(<Spinner label="Uploading" />)
 
-		// Check if SVG element exists
-		const svg = container.querySelector('svg')
-		expect(svg).toBeInTheDocument()
-
-		// Check if circle element exists and has the custom class
-		const circle = container.querySelector('circle')
-		expect(circle).toBeInTheDocument()
-		expect(circle).toHaveClass(customClass)
+		expect(screen.getByRole('status', { name: 'Uploading' })).toBeInTheDocument()
 	})
 
-	it('maintains default spinner styling', () => {
-		const { container } = render(<Spinner className="custom-class" />)
+	it('applies the animation classes and any custom className', () => {
+		const { container } = render(<Spinner className="custom-spinner" />)
 
-		// Check if SVG has the default spinner class
-		const svg = container.querySelector('svg')
-		expect(svg).toHaveClass('spinner')
+		expect(container.querySelector('svg')).toHaveClass('spinner', 'custom-spinner')
+		expect(container.querySelector('circle')).toHaveClass('path')
+	})
 
-		// Check if circle has the default path class
-		const circle = container.querySelector('circle')
-		expect(circle).toHaveClass('path')
+	it('honours a custom size', () => {
+		render(<Spinner size="2rem" />)
+
+		expect(screen.getByRole('status')).toHaveStyle({ width: '2rem', height: '2rem' })
 	})
 })

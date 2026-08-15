@@ -1,0 +1,99 @@
+@import 'styles/mixins';
+
+.header {
+	position: sticky;
+	top: 0;
+	z-index: 15;
+	border-bottom: 1px solid transparent;
+	transition: background-color var(--transition), border-color var(--transition), backdrop-filter var(--transition);
+}
+
+.scrolled {
+	background-color: rgba(10, 11, 13, 0.72);
+	border-bottom-color: var(--border);
+	backdrop-filter: blur(14px) saturate(140%);
+}
+
+.inner {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	width: 100%;
+	max-width: var(--container);
+	height: var(--header-height);
+	margin: 0 auto;
+	padding-inline: var(--gutter);
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 0.7rem;
+	margin-right: auto;
+	border-radius: var(--radius-md);
+
+	&:hover .mark {
+		border-color: var(--accent-border);
+		color: var(--accent);
+	}
+}
+
+.mark {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	background-color: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-sm);
+	font-family: var(--font-mono);
+	font-size: var(--fs-sm);
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	transition: color var(--transition), border-color var(--transition);
+}
+
+.brandText {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.2;
+}
+
+.brandName {
+	font-size: var(--fs-sm);
+	font-weight: 600;
+}
+
+.brandRole {
+	color: var(--text-faint);
+	font-size: var(--fs-xs);
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+
+	@include md-down {
+		display: none;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+}
+
+.contact {
+	@include md-down {
+		display: none;
+	}
+}
+
+.menuButton {
+	@include md-up {
+		display: none;
+	}
+}

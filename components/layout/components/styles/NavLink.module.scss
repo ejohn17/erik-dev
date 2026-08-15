@@ -1,0 +1,31 @@
+.link {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	padding: 0.45rem 0.85rem;
+	border-radius: var(--radius-md);
+	color: var(--text-muted);
+	font-size: var(--fs-sm);
+	font-weight: 500;
+	transition: color var(--transition), background-color var(--transition);
+
+	&:hover {
+		color: var(--text);
+		background-color: var(--surface-hover);
+	}
+}
+
+.active {
+	color: var(--text);
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 0.85rem;
+		right: 0.85rem;
+		bottom: -0.35rem;
+		height: 2px;
+		background-color: var(--accent);
+		border-radius: var(--radius-full);
+	}
+}

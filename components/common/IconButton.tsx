@@ -1,17 +1,27 @@
-import { ReactNode } from 'react'
-import classes from './styles/IconButton.module.scss'
-
+import { ButtonHTMLAttributes, ReactNode } from 'react'
 import cn from 'classnames'
 
-interface ButtonProps {
+import classes from './styles/IconButton.module.scss'
+
+export type IconButtonVariant = 'ghost' | 'outlined'
+export type IconButtonSize = 'sm' | 'md' | 'lg'
+
+interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	children: ReactNode
-	onClick?: () => void
-	className?: string
+	variant?: IconButtonVariant
+	size?: IconButtonSize
 }
 
-const IconButton = ({ children, onClick, className }: ButtonProps): JSX.Element => {
+const IconButton = ({
+	children,
+	variant = 'ghost',
+	size = 'md',
+	className,
+	type = 'button',
+	...rest
+}: IconButtonProps): JSX.Element => {
 	return (
-		<button onClick={onClick} className={cn(classes.button, className)}>
+		<button type={type} className={cn(classes.button, classes[variant], classes[size], className)} {...rest}>
 			{children}
 		</button>
 	)

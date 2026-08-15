@@ -1,28 +1,60 @@
-interface SliderProps {
+import { forwardRef, SelectHTMLAttributes, useId } from 'react'
+import cn from 'classnames'
+import { MdKeyboardArrowDown } from 'react-icons/md'
+
+import classes from './styles/Select.module.scss'
+
+export interface SelectOption {
 	value: string
-	options: {
-		value: string
-		label: string
-	}[]
-	onSelect: (value: string) => void
-	className: string
+	label: string
 }
 
-const Slider = ({ options, onSelect, className }: SliderProps): JSX.Element => {
-	return (
-		<div>
-			<select onChange={(e) => onSelect(e.currentTarget.value)}>
-				<option>Please a language</option>
-				{options.map((option, idx) => {
-					return (
-						<option key={idx} value={option.value}>
-							{option.label}
-						</option>
-					)
-				})}
-			</select>
-		</div>
-	)
+interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
+	options: SelectOption[]
+	onChange: (value: string) => void
+	label?: string
+	placeholder?: string
+	containerClassName?: string
 }
 
-export default Slider
+const Select = forwardRef<HTMLSelectElement, SelectProps>(
+	({ options, onChange, label, placeholder, containerClassName, className, id, ...rest }, ref) => {
+		const generatedId = useId()
+		const selectId = id ?? generatedId
+
+		return (
+			<div className={cn(classes.field, containerClassName)}>
+				{label ? (
+					<label className={classes.label} htmlFor={selectId}>
+						{label}
+					</label>
+				) : null}
+				<div className={classes.control}>
+					<select
+						ref={ref}
+						id={selectId}
+						className={cn(classes.select, className)}
+						onChange={(event) => onChange(event.currentTarget.value)}
+						{...rest}
+					>
+						{placeholder ? (
+							<option value="" disabled>
+								{placeholder}
+							</option>
+						) : null}
+						{options.map((option) => (
+							<option key={option.value} value={option.value}>
+								{option.label}
+							</option>
+						))}
+					</select>
+					<MdKeyboardArrowDown className={classes.chevron} aria-hidden />
+				</div>
+			</div>
+		)
+	},
+)
+
+Select.displayName = 'Select'
+
+export default Select

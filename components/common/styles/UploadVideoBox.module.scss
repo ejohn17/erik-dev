@@ -1,84 +1,49 @@
-@import 'styles/_variables';
-.inputPaper {
+@import 'styles/mixins';
+
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
 	width: 100%;
-	padding: 2rem 3.5rem;
-	background-color: $snow;
-	border-radius: 20px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	max-width: 52rem;
+	background: linear-gradient(160deg, rgba(125, 162, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
 
-	&:hover {
-		box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+.heading {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.title {
+	font-size: var(--fs-h3);
+}
+
+.description {
+	color: var(--text-muted);
+	font-size: var(--fs-sm);
+}
+
+.form {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: start;
+	gap: 0.75rem;
+
+	@include sm-down {
+		grid-template-columns: minmax(0, 1fr);
 	}
+}
 
-	h4 {
-		color: $richBlack;
-		font-weight: 600;
-		font-size: 2rem;
-		margin: 1.5rem 0 2.5rem;
-		text-align: center;
-		@media screen and (max-width: $md) {
-			font-size: 1.8rem;
-		}
-	}
+.input input {
+	padding-block: 0.95rem;
+}
 
-	.actions {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr) 10rem;
-		gap: 2rem;
-		margin-bottom: 3rem;
-		align-items: center;
-		justify-content: center;
+.submit {
+	min-width: 8rem;
+}
 
-		input {
-			background-color: rgba($richBlack, 0.02);
-			border: 2px solid rgba($richBlack, 0.2);
-			border-radius: 12px;
-			color: $richBlack;
-			padding: 1.2rem 2rem;
-			font-size: 1.1rem;
-			transition: all 0.2s ease;
-
-			&:focus {
-				border-color: $richBlack;
-				background-color: transparent;
-				box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-			}
-		}
-
-		.submitButton {
-			background-color: $richBlack;
-			color: $snow;
-			font-weight: 600;
-			border-radius: 12px;
-			height: 100%;
-			font-size: 1.1rem;
-			transition: all 0.2s ease;
-
-			&:hover {
-				background-color: lighten($richBlack, 10%);
-				transform: translateY(-2px);
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-			}
-		}
-
-		.disabledButton {
-			background-color: $richBlack;
-			color: $snow;
-			font-weight: 600;
-			border-radius: 12px;
-			opacity: 0.5;
-			height: 100%;
-			font-size: 1.1rem;
-			cursor: default;
-		}
-
-		.loadingContainer {
-			margin: 0 auto;
-			.spinner {
-				stroke: $richBlack;
-				width: 24px;
-				height: 24px;
-			}
-		}
-	}
+.error {
+	color: var(--danger);
+	font-size: var(--fs-sm);
 }

@@ -1,42 +1,47 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom'
+
 import Select from '../Select'
 
-describe('Select Component', () => {
-	const mockOptions = [
+describe('Select', () => {
+	const options = [
 		{ value: 'en', label: 'English' },
 		{ value: 'es', label: 'Spanish' },
 		{ value: 'fr', label: 'French' },
 	]
-	const mockOnSelect = jest.fn()
+	const onChange = jest.fn()
 
 	beforeEach(() => {
-		mockOnSelect.mockClear()
+		jest.clearAllMocks()
 	})
 
-	it('renders without crashing', () => {
-		render(<Select value="" options={mockOptions} onSelect={mockOnSelect} className="test-class" />)
-		expect(screen.getByRole('combobox')).toBeInTheDocument()
+	it('associates the label with the control', () => {
+		render(<Select label="Caption language" options={options} value="en" onChange={onChange} />)
+
+		expect(screen.getByRole('combobox', { name: 'Caption language' })).toBeInTheDocument()
 	})
 
-	it('displays default placeholder option', () => {
-		render(<Select value="" options={mockOptions} onSelect={mockOnSelect} className="test-class" />)
-		expect(screen.getByText('Please a language')).toBeInTheDocument()
-	})
+	it('renders every option', () => {
+		render(<Select label="Caption language" options={options} value="en" onChange={onChange} />)
 
-	it('renders all options correctly', () => {
-		render(<Select value="" options={mockOptions} onSelect={mockOnSelect} className="test-class" />)
-		mockOptions.forEach((option) => {
-			expect(screen.getByText(option.label)).toBeInTheDocument()
+		options.forEach((option) => {
+			expect(screen.getByRole('option', { name: option.label })).toBeInTheDocument()
 		})
 	})
 
-	it('calls onSelect with correct value when option is selected', () => {
-		render(<Select value="" options={mockOptions} onSelect={mockOnSelect} className="test-class" />)
+	it('renders a placeholder when provided', () => {
+		render(<Select options={options} value="" onChange={onChange} placeholder="Select a language" />)
 
-		fireEvent.change(screen.getByRole('combobox'), {
-			target: { value: 'es' },
-		})
+		expect(screen.getByRole('option', { name: 'Select a language' })).toBeDisabled()
+	})
 
-		expect(mockOnSelect).toHaveBeenCalledWith('es')
+	it('reports the selected value', async () => {
+		const user = userEvent.setup()
+		render(<Select label="Caption language" options={options} value="en" onChange={onChange} />)
+
+		await user.selectOptions(screen.getByRole('combobox'), 'es')
+
+		expect(onChange).toHaveBeenCalledWith('es')
 	})
 })

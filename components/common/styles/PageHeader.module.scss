@@ -1,0 +1,62 @@
+@import 'styles/mixins';
+
+.header {
+	display: flex;
+	align-items: flex-start;
+	gap: 1.25rem;
+
+	@include sm-down {
+		gap: 1rem;
+	}
+}
+
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 3.25rem;
+	height: 3.25rem;
+	margin-top: 0.35rem;
+	background: var(--accent-soft);
+	border: 1px solid var(--accent-border);
+	border-radius: var(--radius-md);
+	color: var(--accent);
+
+	svg {
+		width: 1.6rem;
+		height: 1.6rem;
+		fill: currentColor;
+	}
+
+	@include sm-down {
+		width: 2.75rem;
+		height: 2.75rem;
+
+		svg {
+			width: 1.35rem;
+			height: 1.35rem;
+		}
+	}
+}
+
+.text {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	min-width: 0;
+}
+
+.eyebrow {
+	@include eyebrow;
+}
+
+.title {
+	font-size: var(--fs-h1);
+}
+
+.description {
+	max-width: 46rem;
+	color: var(--text-muted);
+	font-size: var(--fs-lg);
+}

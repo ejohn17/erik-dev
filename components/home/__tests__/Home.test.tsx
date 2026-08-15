@@ -112,10 +112,25 @@ describe('Home Component', () => {
 		})
 
 		it('renders navigation links for available exercises', () => {
-			const links = screen.getAllByRole('link')
-			expect(links).toHaveLength(2) // Youtube to mp3 and Caption Generator
-			expect(links[0]).toHaveAttribute('href', '/youtube-to-mp3')
-			expect(links[1]).toHaveAttribute('href', '/caption-generator')
+			const projectLinks = screen.getAllByRole('link', { name: /view project/i })
+
+			expect(projectLinks).toHaveLength(2) // Youtube to mp3 and Caption Generator
+			expect(projectLinks[0]).toHaveAttribute('href', '/youtube-to-mp3')
+			expect(projectLinks[1]).toHaveAttribute('href', '/caption-generator')
+		})
+
+		it('disables the exercise that is not ready yet', () => {
+			expect(screen.getByRole('button', { name: /coming soon/i })).toBeDisabled()
+		})
+	})
+
+	describe('Contact', () => {
+		it('links to email and resume', () => {
+			expect(screen.getAllByRole('link', { name: /get in touch/i })[0]).toHaveAttribute(
+				'href',
+				'mailto:johnstonerik17@gmail.com',
+			)
+			expect(screen.getAllByRole('link', { name: /view resume/i })[0]).toHaveAttribute('href', '/files/resume.pdf')
 		})
 	})
 })

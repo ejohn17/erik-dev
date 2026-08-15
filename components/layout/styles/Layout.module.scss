@@ -1,72 +1,28 @@
-@import 'styles/_variables';
 .root {
-	display: grid;
-	grid-template-rows: 4rem minmax(0, 1fr);
-	height: 100vh;
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
-	background: $snow;
-	overflow-x: hidden;
-	overflow-y: auto;
-	scrollbar-width: thin;
-	scrollbar-color: rgba($richBlack, 0.3) transparent;
+}
 
-	&::-webkit-scrollbar {
-		width: 8px;
-	}
+.main {
+	flex: 1 0 auto;
+}
 
-	&::-webkit-scrollbar-track {
-		background: transparent;
-	}
+.skipLink {
+	position: absolute;
+	top: 0.75rem;
+	left: 0.75rem;
+	z-index: 30;
+	padding: 0.6rem 1rem;
+	background-color: var(--accent);
+	border-radius: var(--radius-md);
+	color: var(--text-inverse);
+	font-size: var(--fs-sm);
+	font-weight: 600;
+	transform: translateY(-200%);
+	transition: transform var(--transition);
 
-	&::-webkit-scrollbar-thumb {
-		background-color: rgba($richBlack, 0.3);
-		border-radius: 4px;
-	}
-	.header {
-		position: sticky;
-		top: 0;
-		background: linear-gradient(135deg, rgba($richBlack, 0.95) 0%, rgba(lighten($richBlack, 10%), 0.94) 100%);
-		backdrop-filter: blur(8px);
-		border-bottom: 1px solid rgba($snow, 0.16);
-		display: flex;
-		align-items: center;
-		padding: 0 1.25rem;
-		z-index: 4;
-		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-
-		.menuButton {
-			cursor: pointer;
-			width: 2.75rem;
-			height: 2.75rem;
-			border-radius: 10px;
-			border: 1px solid rgba($snow, 0.2);
-			background-color: rgba($snow, 0.06);
-			transition: all 0.2s ease;
-
-			&:hover {
-				background-color: rgba($snow, 0.16);
-				border-color: rgba($snow, 0.35);
-			}
-
-			svg {
-				fill: $snow;
-				width: 1.6rem;
-				height: 1.6rem;
-				transition: transform 0.2s ease;
-			}
-
-			&:hover svg {
-				transform: scale(1.08);
-			}
-		}
-
-		.menuButtonOpen {
-			background-color: rgba($snow, 0.18);
-			border-color: rgba($snow, 0.35);
-		}
-	}
-
-	.main {
-		position: relative;
+	&:focus-visible {
+		transform: translateY(0);
 	}
 }

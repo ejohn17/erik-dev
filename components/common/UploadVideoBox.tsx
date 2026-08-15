@@ -1,73 +1,92 @@
-import { useState, useMemo, useCallback } from 'react'
+import { FormEvent, useCallback, useMemo, useState } from 'react'
+import axios from 'axios'
+
+import Button from './Button'
+import Card from './Card'
+import Input from './Input'
+import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
 
 import classes from './styles/UploadVideoBox.module.scss'
 
-import axios from 'axios'
-import Spinner from '@/components/common/Spinner'
-import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
+const YOUTUBE_URL_PATTERN = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|\?v=)([^#&?]*).*/
 
-interface UploadProps {
+interface UploadVideoBoxProps {
 	setDownloadURL: (url: string) => void
 	setVideoTitle: (title: string) => void
 	setVideoCaptions?: (data: YoutubeSubtitle[]) => void
 	setAudioURL?: (url: string) => void
+	title?: string
+	description?: string
+	submitLabel?: string
 }
 
-const UploadVideoBox = ({ setDownloadURL, setVideoTitle, setVideoCaptions, setAudioURL }: UploadProps): JSX.Element => {
+const UploadVideoBox = ({
+	setDownloadURL,
+	setVideoTitle,
+	setVideoCaptions,
+	setAudioURL,
+	title = 'Paste a YouTube link',
+	description = 'We fetch the video, store it, and hand it back ready to work with.',
+	submitLabel = 'Upload',
+}: UploadVideoBoxProps): JSX.Element => {
 	const [youtubeURL, setYoutubeURL] = useState<string>('')
 	const [loading, setLoading] = useState<boolean>(false)
+	const [error, setError] = useState<string>('')
 
-	const setLoadingTrue = () => setLoading(true)
-	const setLoadingFalse = () => setLoading(false)
+	const isValidURL = useMemo(() => YOUTUBE_URL_PATTERN.test(youtubeURL), [youtubeURL])
+	const showValidationError = !!youtubeURL && !isValidURL
 
-	const onInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-		setYoutubeURL(e.currentTarget.value)
-	}
+	const uploadVideo = useCallback(
+		async (event: FormEvent<HTMLFormElement>) => {
+			event.preventDefault()
+			if (!isValidURL || loading) return
 
-	const isValidURL = useMemo(() => {
-		const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/
-		const match = youtubeURL.match(regExp)
-		return match
-	}, [youtubeURL])
+			setLoading(true)
+			setError('')
 
-	const uploadVideo = useCallback(async () => {
-		setLoadingTrue()
-		axios
-			.post('/api/videos/youtubeUpload', { youtubeURL })
-			.then((resp) => {
-				setVideoTitle(resp.data.title)
-				setDownloadURL(resp.data.downloadURL)
-				if (!!setVideoCaptions) {
-					setVideoCaptions(resp.data.subtitles)
-				}
-				if (!!setAudioURL) {
-					setAudioURL(resp.data.audioURL)
-				}
-			})
-			.finally(setLoadingFalse)
-	}, [setAudioURL, setDownloadURL, setVideoCaptions, setVideoTitle, youtubeURL])
+			try {
+				const { data } = await axios.post('/api/videos/youtubeUpload', { youtubeURL })
+				setVideoTitle(data.title)
+				setDownloadURL(data.downloadURL)
+				setVideoCaptions?.(data.subtitles)
+				setAudioURL?.(data.audioURL)
+			} catch {
+				setError('We could not process that video. Check the link and try again.')
+			} finally {
+				setLoading(false)
+			}
+		},
+		[isValidURL, loading, setAudioURL, setDownloadURL, setVideoCaptions, setVideoTitle, youtubeURL],
+	)
 
 	return (
-		<div className={classes.inputPaper}>
-			<h4>Please enter a proper Youtube URL</h4>
-			<div className={classes.actions}>
-				<input
-					placeholder="youtube.com/watch?v=yOu-TuBe_42"
-					onChange={onInputChange}
-					value={youtubeURL}
-					disabled={loading}
-				/>
-				{loading ? (
-					<div className={classes.loadingContainer}>
-						<Spinner className={classes.spinner} data-testid="spinner" />
-					</div>
-				) : (
-					<button className={!isValidURL ? classes.disabledButton : classes.submitButton} onClick={uploadVideo}>
-						Upload
-					</button>
-				)}
+		<Card padding="lg" className={classes.card}>
+			<div className={classes.heading}>
+				<h2 className={classes.title}>{title}</h2>
+				<p className={classes.description}>{description}</p>
 			</div>
-		</div>
+			<form className={classes.form} onSubmit={uploadVideo} noValidate>
+				<Input
+					containerClassName={classes.input}
+					aria-label="YouTube URL"
+					placeholder="youtube.com/watch?v=yOu-TuBe_42"
+					value={youtubeURL}
+					onChange={(event) => setYoutubeURL(event.currentTarget.value)}
+					disabled={loading}
+					error={showValidationError ? 'That does not look like a YouTube URL.' : undefined}
+					autoComplete="off"
+					spellCheck={false}
+				/>
+				<Button type="submit" size="lg" disabled={!isValidURL} loading={loading} className={classes.submit}>
+					{submitLabel}
+				</Button>
+			</form>
+			{error ? (
+				<p className={classes.error} role="alert">
+					{error}
+				</p>
+			) : null}
+		</Card>
 	)
 }
 

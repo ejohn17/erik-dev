@@ -1,0 +1,48 @@
+@import 'styles/mixins';
+
+.card {
+	position: relative;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	transition: background-color var(--transition), border-color var(--transition), transform var(--transition),
+		box-shadow var(--transition);
+}
+
+.muted {
+	background: transparent;
+}
+
+.interactive {
+	&:hover,
+	&:focus-within {
+		background: var(--surface-hover);
+		border-color: var(--border-strong);
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+	}
+}
+
+.padding-none {
+	padding: 0;
+}
+
+.padding-sm {
+	padding: 1rem;
+}
+
+.padding-md {
+	padding: 1.75rem;
+
+	@include sm-down {
+		padding: 1.35rem;
+	}
+}
+
+.padding-lg {
+	padding: 2.5rem;
+
+	@include sm-down {
+		padding: 1.75rem;
+	}
+}

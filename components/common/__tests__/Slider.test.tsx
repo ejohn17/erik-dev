@@ -1,52 +1,60 @@
-import { render, fireEvent, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
 import Slider from '../Slider'
 
 describe('Slider', () => {
-	const mockOnChange = jest.fn()
-	const mockOnChangeCommitted = jest.fn()
+	const onChange = jest.fn()
+	const onChangeCommitted = jest.fn()
 
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
 
-	it('renders correctly with default props', () => {
-		render(<Slider value={50} onChange={mockOnChange} />)
-		const slider = screen.getByRole('slider')
-		expect(slider).toBeInTheDocument()
+	it('renders the current value', () => {
+		render(<Slider value={50} onChange={onChange} ariaLabel="Volume" />)
+
+		const slider = screen.getByRole('slider', { name: 'Volume' })
 		expect(slider).toHaveValue('50')
 	})
 
-	it('applies custom className when provided', () => {
-		const customClass = 'custom-class'
-		render(<Slider value={50} onChange={mockOnChange} className={customClass} />)
-		expect(screen.getByRole('slider').parentElement).toHaveClass(customClass)
+	it('applies a custom className to the root', () => {
+		render(<Slider value={50} onChange={onChange} className="custom-class" />)
+
+		expect(screen.getByRole('slider').parentElement).toHaveClass('custom-class')
 	})
 
-	it('shows progress bar when progressBar prop is true', () => {
-		render(<Slider value={50} onChange={mockOnChange} progressBar />)
-		const progressBar = screen.getByRole('slider')
-		expect(progressBar).toHaveClass('progressBar')
+	it('supports the progress bar variant', () => {
+		render(<Slider value={50} onChange={onChange} progressBar />)
+
+		expect(screen.getByRole('slider').parentElement).toHaveClass('progressBar')
 	})
 
-	it('calls onChange when value changes', () => {
-		render(<Slider value={50} onChange={mockOnChange} />)
-		const slider = screen.getByRole('slider')
+	it('calls onChange as the value changes', () => {
+		render(<Slider value={50} onChange={onChange} />)
 
-		fireEvent.input(slider, { target: { value: '75' } })
-		expect(mockOnChange).toHaveBeenCalledWith(75)
+		fireEvent.change(screen.getByRole('slider'), { target: { value: '75' } })
+
+		expect(onChange).toHaveBeenCalledWith(75)
 	})
 
-	it('calls onChangeCommitted when mouse is released', () => {
-		render(<Slider value={50} onChange={mockOnChange} onChangeComitted={mockOnChangeCommitted} />)
-		const slider = screen.getByRole('slider')
+	it('commits the value when the pointer is released', () => {
+		render(<Slider value={75} onChange={onChange} onChangeCommitted={onChangeCommitted} />)
 
-		fireEvent.mouseUp(slider, { target: { value: '75' } })
-		expect(mockOnChangeCommitted).toHaveBeenCalledWith(75)
+		fireEvent.pointerUp(screen.getByRole('slider'))
+
+		expect(onChangeCommitted).toHaveBeenCalledWith(75)
 	})
 
-	it('handles null/undefined value correctly', () => {
-		render(<Slider value={0} onChange={mockOnChange} />)
-		const slider = screen.getByRole('slider')
-		expect(slider).toHaveValue('0')
+	it('clamps values that fall outside the range', () => {
+		render(<Slider value={140} onChange={onChange} />)
+
+		expect(screen.getByRole('slider')).toHaveValue('100')
+	})
+
+	it('falls back to the minimum for a non finite value', () => {
+		render(<Slider value={NaN} onChange={onChange} />)
+
+		expect(screen.getByRole('slider')).toHaveValue('0')
 	})
 })

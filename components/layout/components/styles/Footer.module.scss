@@ -1,0 +1,91 @@
+@import 'styles/mixins';
+
+.footer {
+	margin-top: var(--section-gap);
+	border-top: 1px solid var(--border);
+	background-color: var(--bg-soft);
+}
+
+.inner {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+	gap: 2.5rem;
+	width: 100%;
+	max-width: var(--container);
+	margin: 0 auto;
+	padding: 3.5rem var(--gutter) 2.5rem;
+
+	@include md-down {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	}
+
+	@include sm-down {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2rem;
+		padding-top: 2.5rem;
+	}
+}
+
+.brand {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	@include md-down {
+		grid-column: 1 / -1;
+	}
+}
+
+.name {
+	font-weight: 600;
+}
+
+.tagline {
+	max-width: 24rem;
+	color: var(--text-muted);
+	font-size: var(--fs-sm);
+}
+
+.links {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.6rem;
+}
+
+.groupTitle {
+	@include eyebrow;
+}
+
+.link {
+	color: var(--text-muted);
+	font-size: var(--fs-sm);
+	transition: color var(--transition);
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
+.baseline {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	width: 100%;
+	max-width: var(--container);
+	margin: 0 auto;
+	padding: 1.25rem var(--gutter) 2rem;
+	border-top: 1px solid var(--border);
+	color: var(--text-faint);
+	font-size: var(--fs-xs);
+
+	@include sm-down {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+}
+
+.builtWith {
+	font-family: var(--font-mono);
+}

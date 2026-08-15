@@ -1,201 +1,207 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import classes from './styles/Captions.module.scss'
-
-import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
-import languages from '@/utilities/languages'
+import axios from 'axios'
+import FileSaver from 'file-saver'
 
 import { BsTranslate } from 'react-icons/bs'
-import { RxReset } from 'react-icons/rx'
-import { PiTranslateThin } from 'react-icons/pi'
-
-import UploadVideoBox from '../common/UploadVideoBox'
-import VideoPlayer from '../common/VideoPlayer'
-import CaptionSection from './components/CaptionSection'
-import Select from 'react-select'
-import axios from 'axios'
-import Spinner from '../common/Spinner'
 import { MdDownload } from 'react-icons/md'
-import FileSaver from 'file-saver'
+import { RxReset } from 'react-icons/rx'
+
+import Button from 'components/common/Button'
+import Card from 'components/common/Card'
+import Select from 'components/common/Select'
+import ToolPage from 'components/common/ToolPage'
+import UploadVideoBox from 'components/common/UploadVideoBox'
+import VideoPlayer from 'components/common/VideoPlayer'
+import CaptionSection from './components/CaptionSection'
+
+import { YoutubeSubtitle } from '@/pages/api/videos/youtubeUpload'
 import { getVideoBlob, getVideoRef } from '@/firebaseUtils/storage'
+import languages from '@/utilities/languages'
+
+import classes from './styles/Captions.module.scss'
+
+const SOURCE_LANGUAGE = 'en'
+
+const languageOptions = languages.map((language) => ({ value: language.code, label: language.label }))
+
+const steps = [
+	'Find the video you want on YouTube.',
+	'Copy its URL from the address bar, or right click the video and copy the link.',
+	'Paste the URL into the field above and press upload.',
+	'Pick a language, generate the translation, then watch it live or download the subtitled video.',
+]
+
+const about = (
+	<>
+		<p>
+			This is a simple tool for pulling the captions out of any YouTube video. Once they are loaded you can translate
+			them into any supported language, follow along with the transcript, and see the translated captions play back on
+			the video itself.
+		</p>
+		<p>
+			Video details are stored in a Google Cloud NoSQL database alongside a download URL, and the media is uploaded to
+			Firebase Cloud Storage at request time. Downloading burns the captions you generated into the video as an optional
+			subtitle track.
+		</p>
+	</>
+)
 
 const Captions = (): JSX.Element => {
 	const [downloadURL, setDownloadURL] = useState<string>('')
 	const [videoTitle, setVideoTitle] = useState<string>('')
+	const [videoCaptions, setVideoCaptions] = useState<YoutubeSubtitle[]>(null)
+	const [translatedCaptions, setTranslatedCaptions] = useState<Record<string, YoutubeSubtitle[]>>({})
+	const [language, setLanguage] = useState<string>(SOURCE_LANGUAGE)
 	const [translating, setTranslating] = useState<boolean>(false)
 	const [downloading, setDownloading] = useState<boolean>(false)
-	const [videoCaptions, setVideoCaptions] = useState<YoutubeSubtitle[]>(null)
-
-	const [translatedCaptions, setTranslatedCaptions] = useState<Record<string, YoutubeSubtitle[]>>({})
-
-	const [currentLanguage, setCurrentLanguage] = useState({ value: 'en', label: 'English' })
-
+	const [error, setError] = useState<string>('')
 	const [timeElapsed, setTime] = useState<number>(0)
 
 	const videoRef = useRef<HTMLVideoElement>(null)
 
+	const languageLabel = useMemo(
+		() => languageOptions.find((option) => option.value === language)?.label ?? language,
+		[language],
+	)
+
+	const currentCaptions = useMemo(() => {
+		if (language === SOURCE_LANGUAGE) return videoCaptions
+		return translatedCaptions[language] ?? videoCaptions
+	}, [language, translatedCaptions, videoCaptions])
+
+	const isTranslated = language === SOURCE_LANGUAGE || !!translatedCaptions[language]
+
+	const activeCaption = useMemo(() => {
+		if (!currentCaptions?.length) return 0
+		const upcoming = currentCaptions.findIndex((caption) => parseFloat(caption.start) > timeElapsed)
+		return upcoming === -1 ? currentCaptions.length - 1 : Math.max(upcoming - 1, 0)
+	}, [currentCaptions, timeElapsed])
+
 	const clearVideo = useCallback(() => {
 		setDownloadURL('')
 		setVideoTitle('')
-		setTranslatedCaptions({})
-		setDownloading(false)
 		setVideoCaptions(null)
+		setTranslatedCaptions({})
+		setLanguage(SOURCE_LANGUAGE)
+		setError('')
+		setTime(0)
 	}, [])
-
-	const handleSelectLang = useCallback((lang) => setCurrentLanguage(lang), [])
-
-	const currentCaptions = useMemo(() => {
-		if (currentLanguage.label !== 'en') {
-			if (!!translatedCaptions[currentLanguage.value]) {
-				return translatedCaptions[currentLanguage.value]
-			}
-			return videoCaptions
-		}
-		return videoCaptions
-	}, [currentLanguage, translatedCaptions, videoCaptions])
-
-	const activeCaption = useMemo(() => {
-		if (!videoCaptions) return 0
-		let captionIdx = 0
-		for (let i = 0; i < videoCaptions.length - 1; i++) {
-			const currentCaption = videoCaptions[i]
-			const nextCaption = videoCaptions[i + 1]
-
-			if (timeElapsed >= parseFloat(currentCaption.start) && timeElapsed < parseFloat(nextCaption.start)) {
-				captionIdx = i
-				break
-			}
-		}
-		return captionIdx
-	}, [timeElapsed, videoCaptions])
 
 	const translateCaptions = useCallback(async () => {
 		setTranslating(true)
-		axios
-			.post('/api/videos/translateCaptions', { captions: videoCaptions, language: currentLanguage.value })
-			.then((resp) => {
-				const newCaptions = { ...translateCaptions }
-				newCaptions[currentLanguage.value] = resp.data.captions
+		setError('')
 
-				setTranslatedCaptions(newCaptions)
-			})
-			.finally(() => setTranslating(false))
-	}, [currentLanguage, videoCaptions])
+		try {
+			const { data } = await axios.post('/api/videos/translateCaptions', { captions: videoCaptions, language })
+			setTranslatedCaptions((previous) => ({ ...previous, [language]: data.captions }))
+		} catch {
+			setError('We could not translate those captions. Please try again.')
+		} finally {
+			setTranslating(false)
+		}
+	}, [language, videoCaptions])
 
 	const downloadTranslations = useCallback(async () => {
 		setDownloading(true)
-		axios
-			.post('/api/videos/downloadTranslatedVideo', {
+		setError('')
+
+		const savedTitle = `${videoTitle.replace(/[/\\?%*:|"<>]/g, '')}-${languageLabel}.mp4`
+
+		try {
+			await axios.post('/api/videos/downloadTranslatedVideo', {
 				cloudURL: downloadURL,
 				captions: currentCaptions,
 				title: videoTitle,
-				lang: currentLanguage.label,
-				langKey: currentLanguage.value,
+				lang: languageLabel,
+				langKey: language,
 			})
-			.then((resp) => {
-				const savedTitle = `${videoTitle.replace(/[/\\?%*:|"<>]/g, '')}-${currentLanguage.label}.mp4`
-				const videoRef = getVideoRef(savedTitle)
-				getVideoBlob(videoRef).then((videoBlob) => {
-					FileSaver.saveAs(videoBlob, savedTitle)
-					setDownloading(false)
-				})
-			})
-	}, [currentCaptions, currentLanguage, downloadURL, videoTitle])
+			const videoBlob = await getVideoBlob(getVideoRef(savedTitle))
+			FileSaver.saveAs(videoBlob, savedTitle)
+		} catch {
+			setError('We could not build that download. Please try again.')
+		} finally {
+			setDownloading(false)
+		}
+	}, [currentCaptions, downloadURL, language, languageLabel, videoTitle])
+
+	const activeCaptionText = currentCaptions?.[activeCaption]?.text
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.content}>
-				<h2 className={classes.title}>
-					<BsTranslate />
-					Generate Captions
-				</h2>
-				{downloadURL ? (
-					<>
-						<div className={classes.loadedVideo}>
-							<h3>{videoTitle.replaceAll('"', '')}</h3>
-							<div className={classes.videoWrapper}>
-								<VideoPlayer
-									url={downloadURL}
-									className={classes.videoPlayer}
-									videoRef={videoRef}
-									timeElapsed={timeElapsed}
-									setTime={setTime}
-								/>
-								{!!currentCaptions[activeCaption] ? (
-									<p className={classes.caption}>{currentCaptions[activeCaption].text}</p>
-								) : null}
-							</div>
-						</div>
-						<div className={classes.videoActions}>
-							<div className={classes.languageSelection}>
-								{!!translatedCaptions[currentLanguage.value] ? (
-									<button onClick={downloadTranslations}>
-										Download {downloading ? <Spinner className={classes.spinner} /> : <MdDownload />}
-									</button>
+		<ToolPage
+			icon={<BsTranslate />}
+			title="Caption Generator"
+			description="Pull the captions out of a YouTube video, translate them, and download the subtitled result."
+			steps={steps}
+			about={about}
+		>
+			{downloadURL ? (
+				<div className={classes.workspace}>
+					<div className={classes.stage}>
+						<h2 className={classes.videoTitle}>{videoTitle.replaceAll('"', '')}</h2>
+						<VideoPlayer
+							url={downloadURL}
+							videoRef={videoRef}
+							timeElapsed={timeElapsed}
+							setTime={setTime}
+							overlay={activeCaptionText ? <p className={classes.caption}>{activeCaptionText}</p> : null}
+						/>
+						<Card padding="sm" className={classes.toolbar}>
+							<Select
+								containerClassName={classes.languageSelect}
+								label="Caption language"
+								options={languageOptions}
+								value={language}
+								onChange={setLanguage}
+								disabled={translating || downloading}
+							/>
+							<div className={classes.toolbarActions}>
+								{isTranslated ? (
+									<Button onClick={downloadTranslations} loading={downloading} icon={<MdDownload />}>
+										Download
+									</Button>
 								) : (
-									<button onClick={translateCaptions}>
-										Translate {translating ? <Spinner className={classes.spinner} /> : <PiTranslateThin />}
-									</button>
+									<Button onClick={translateCaptions} loading={translating} icon={<BsTranslate />}>
+										Translate
+									</Button>
 								)}
-								<Select
-									// @ts-ignore
-									options={languages.map((lang) => ({ value: lang.code, label: lang.label }))}
-									value={currentLanguage}
-									onChange={handleSelectLang}
-									className={classes.selector}
-								/>
+								<Button onClick={clearVideo} variant="secondary" icon={<RxReset />}>
+									Reset
+								</Button>
 							</div>
-							<button onClick={clearVideo}>
-								Reset <RxReset />
-							</button>
-						</div>
-					</>
-				) : (
-					<UploadVideoBox
-						setDownloadURL={setDownloadURL}
-						setVideoTitle={setVideoTitle}
-						setVideoCaptions={setVideoCaptions}
-					/>
-				)}
-				{videoCaptions ? (
-					<CaptionSection
-						videoRef={videoRef}
-						videoCaptions={currentCaptions}
-						setTime={setTime}
-						activeCaption={activeCaption}
-					/>
-				) : (
-					<div className={classes.seoContent}>
-						<p>
-							This is a simple tool for you to use in order to take any Youtube video and grab the captions from the
-							video. With those captions you can then translate them to any language you would like and see the
-							translated captions directly on the site on the video player. Alternatively you can also download the
-							youtube video with any captions you have generated added as optional captions in the downloaded video.
-						</p>
-						<p>
-							This tool makes use of a Google Cloud NoSQL Database in order to store the information returned from the
-							server about the requested video so that we can display this information properly to the user. At upload
-							request time this information as well as a download URL for the video will be saved to a NoSQL document
-							that we will use to display the information and then perform the download. The actual Mp3 file will be
-							automatically uploaded to Firebase Cloud Storage at the time of upload request and then the request to
-							download will use the provided cloud url.
-						</p>
-						<p>Follow these steps to generate captions for a Youtube video</p>
-						<ol>
-							<li>Go to youtube and find the video you would like to download.</li>
-							<li>
-								Either right click the video and copy the URL or open the video and copy the URL that is in your search
-								bar.
-							</li>
-							<li>Paste the copied URL into the input field on this page and then click the upload button.</li>
-							<li>
-								Once the video finishes uploading select the language you would like to generate captions for and then
-								press the generate button.
-							</li>
-						</ol>
+						</Card>
+						{error ? (
+							<p className={classes.error} role="alert">
+								{error}
+							</p>
+						) : null}
 					</div>
-				)}
-			</div>
-		</div>
+
+					{currentCaptions?.length ? (
+						<Card padding="none" className={classes.transcript}>
+							<div className={classes.transcriptHeader}>
+								<h3 className={classes.transcriptTitle}>Transcript</h3>
+								<span className={classes.transcriptMeta}>
+									{languageLabel} &middot; {currentCaptions.length} lines
+								</span>
+							</div>
+							<CaptionSection
+								videoRef={videoRef}
+								videoCaptions={currentCaptions}
+								setTime={setTime}
+								activeCaption={activeCaption}
+							/>
+						</Card>
+					) : null}
+				</div>
+			) : (
+				<UploadVideoBox
+					setDownloadURL={setDownloadURL}
+					setVideoTitle={setVideoTitle}
+					setVideoCaptions={setVideoCaptions}
+					description="We fetch the video and its caption track so you can translate and re-download it."
+				/>
+			)}
+		</ToolPage>
 	)
 }
 

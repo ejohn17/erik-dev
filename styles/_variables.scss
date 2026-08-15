@@ -1,22 +1,3 @@
-// Palette #1
-$medPurple: #270722;
-$darkPurple: #230621;
-$deepChamp: #ecce8e;
-$medChamp: #e0d6a4;
-$laurGreen: #c2c6a7;
-$opal: #9ac2c5;
-$blueBlack: #141b2e;
-
-// Palette #2
-$richBlack: #0f0f0f;
-$richGray: #0f0f0f;
-$byzantineBlue: #3454d1;
-$lapis: #005e7c;
-$blueNCS: #0094c6;
-$blueSaph: #005e7c;
-$snow: #fef9ef;
-$beige: #222823;
-
 // Breakpoints
 $xs: 0px;
 $sm: 600px;
@@ -24,3 +5,7 @@ $md: 960px;
 $lg: 1280px;
 $xl: 1440px;
 $xxl: 1920px;
+
+// Layout constants that SCSS needs at build time (media queries, calc fallbacks).
+// Everything else lives as a CSS custom property in globals.scss.
+$headerHeight: 4rem;

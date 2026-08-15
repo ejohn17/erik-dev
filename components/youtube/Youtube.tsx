@@ -1,21 +1,46 @@
-import React, { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
+import FileSaver from 'file-saver'
+
+import { FaYoutube } from 'react-icons/fa'
+import { MdDownload } from 'react-icons/md'
+import { RxReset } from 'react-icons/rx'
+
+import Button from 'components/common/Button'
+import Card from 'components/common/Card'
+import ToolPage from 'components/common/ToolPage'
+import UploadVideoBox from 'components/common/UploadVideoBox'
+import VideoPlayer from 'components/common/VideoPlayer'
+import { getVideoBlob, getVideoRef } from '@/firebaseUtils/storage'
 
 import classes from './styles/Youtube.module.scss'
-import { ImYoutube2 } from 'react-icons/im'
-import UploadVideoBox from '../common/UploadVideoBox'
-import VideoPlayer from '../common/VideoPlayer'
 
-import FileSaver from 'file-saver'
-import { getVideoBlob, getVideoRef } from '@/firebaseUtils/storage'
-import { MdDownload } from 'react-icons/md'
-import Spinner from '../common/Spinner'
+const steps = [
+	'Find the video you want on YouTube.',
+	'Copy its URL from the address bar, or right click the video and copy the link.',
+	'Paste the URL into the field above and press upload.',
+	'When the video finishes uploading, hit download and your MP3 is ready.',
+]
 
-import { RxReset } from 'react-icons/rx'
+const about = (
+	<>
+		<p>
+			This is a simple tool for taking any YouTube video you find and turning that video&apos;s audio into a
+			downloadable MP3 file. It uses the youtube-dl package to pull the important details out of a video, such as the
+			title and thumbnail, and returns them to the browser so you can confirm you picked the right one before
+			downloading.
+		</p>
+		<p>
+			The video details are stored in a Google Cloud NoSQL database alongside a download URL, and the MP3 itself is
+			uploaded to Firebase Cloud Storage at request time. The download button then streams the file straight from that
+			cloud URL.
+		</p>
+	</>
+)
 
 const Youtube = (): JSX.Element => {
 	const [downloadURL, setDownloadURL] = useState<string>('')
 	const [videoTitle, setVideoTitle] = useState<string>('')
-	const [downloadBusy, setDownloadBusy] = useState<boolean>(false)
+	const [downloading, setDownloading] = useState<boolean>(false)
 	const [timeElapsed, setTime] = useState<number>(0)
 
 	const videoRef = useRef<HTMLVideoElement>(null)
@@ -23,77 +48,52 @@ const Youtube = (): JSX.Element => {
 	const clearVideo = useCallback(() => {
 		setDownloadURL('')
 		setVideoTitle('')
+		setTime(0)
 	}, [])
 
-	const downloadVideo = useCallback(() => {
-		setDownloadBusy(true)
-		const videoRef = getVideoRef(videoTitle.replace(/[/\\?%*:|"<>]/g, '') + '.mp3')
-		getVideoBlob(videoRef).then((videoBlob) => {
+	const downloadVideo = useCallback(async () => {
+		setDownloading(true)
+
+		try {
+			const storageRef = getVideoRef(`${videoTitle.replace(/[/\\?%*:|"<>]/g, '')}.mp3`)
+			const videoBlob = await getVideoBlob(storageRef)
 			FileSaver.saveAs(videoBlob, `${videoTitle}.mp3`)
-			setDownloadBusy(false)
-		})
+		} finally {
+			setDownloading(false)
+		}
 	}, [videoTitle])
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.content}>
-				<h2 className={classes.title}>
-					<ImYoutube2 />
-					to Mp3
-				</h2>
-				{downloadURL ? (
-					<div className={classes.loadedVideo}>
-						<h3>{videoTitle.replaceAll('"', '')}</h3>
-						<VideoPlayer
-							url={downloadURL}
-							className={classes.videoPlayer}
-							videoRef={videoRef}
-							timeElapsed={timeElapsed}
-							setTime={setTime}
-						/>
-						<div className={classes.videoActions}>
-							<button onClick={downloadVideo}>
-								Download {downloadBusy ? <Spinner className={classes.spinner} /> : <MdDownload />}
-							</button>
-							<button onClick={clearVideo}>
-								Reset <RxReset />
-							</button>
+		<ToolPage
+			icon={<FaYoutube />}
+			title="Youtube to Mp3"
+			description="Paste a YouTube link, preview the video, and download its audio as an MP3."
+			steps={steps}
+			about={about}
+		>
+			{downloadURL ? (
+				<Card className={classes.player}>
+					<div className={classes.playerHeader}>
+						<h2 className={classes.videoTitle}>{videoTitle.replaceAll('"', '')}</h2>
+						<div className={classes.actions}>
+							<Button onClick={downloadVideo} loading={downloading} icon={<MdDownload />}>
+								Download
+							</Button>
+							<Button onClick={clearVideo} variant="secondary" icon={<RxReset />}>
+								Reset
+							</Button>
 						</div>
 					</div>
-				) : (
-					<UploadVideoBox setDownloadURL={setDownloadURL} setVideoTitle={setVideoTitle} />
-				)}
-				<div className={classes.seoContent}>
-					<p>
-						This is a simple tool for you to use in order to take any Youtube video that you find and turn that videos
-						audio into a downloadable Mp3 file. This tool makes use of the youtubedl npm package in order to grab
-						important information from a given youtube video such as the title and thumbnail and returnt that to the
-						client to display. From there we can decide if this video is what we want to download and use the data
-						returned from the package in order to download our new Mp3 file.
-					</p>
-					<p>
-						This tool makes use of a Google Cloud NoSQL Database in order to store the information returned from the
-						server about the requested video so that we can display this information properly to the user. At upload
-						request time this information as well as a download URL for the video will be saved to a NoSQL document that
-						we will use to display the information and then perform the download. The actual Mp3 file will be
-						automatically uploaded to Firebase Cloud Storage at the time of upload request and then the request to
-						download will use the provided cloud url.
-					</p>
-					<p>Follow these steps to download a Youtube video</p>
-					<ol>
-						<li>Go to youtube and find the video you would like to download.</li>
-						<li>
-							Either right click the video and copy the URL or open the video and copy the URL that is in your search
-							bar.
-						</li>
-						<li>Paste the copied URL into the input field on this page and then click the upload button.</li>
-						<li>
-							Once the video finishes uploading click the download button and your new Mp3 file will be available!
-						</li>
-					</ol>
-				</div>
-			</div>
-		</div>
+					<VideoPlayer url={downloadURL} videoRef={videoRef} timeElapsed={timeElapsed} setTime={setTime} />
+				</Card>
+			) : (
+				<UploadVideoBox
+					setDownloadURL={setDownloadURL}
+					setVideoTitle={setVideoTitle}
+					description="We grab the video, pull out the audio track, and hand back an MP3 you can download."
+				/>
+			)}
+		</ToolPage>
 	)
 }
 

@@ -1,0 +1,55 @@
+@import 'styles/variables';
+
+@mixin sm-down {
+	@media screen and (max-width: $sm) {
+		@content;
+	}
+}
+
+@mixin md-down {
+	@media screen and (max-width: $md) {
+		@content;
+	}
+}
+
+@mixin lg-down {
+	@media screen and (max-width: $lg) {
+		@content;
+	}
+}
+
+@mixin md-up {
+	@media screen and (min-width: $md + 1px) {
+		@content;
+	}
+}
+
+@mixin container {
+	width: 100%;
+	max-width: var(--container);
+	margin: 0 auto;
+	padding-inline: var(--gutter);
+}
+
+@mixin surface {
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+}
+
+@mixin eyebrow {
+	font-family: var(--font-mono);
+	font-size: var(--fs-xs);
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--text-faint);
+}
+
+// Fades out overflowing text after a set number of lines.
+@mixin clamp-lines($lines) {
+	display: -webkit-box;
+	-webkit-line-clamp: $lines;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}

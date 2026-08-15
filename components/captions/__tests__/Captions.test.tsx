@@ -1,25 +1,29 @@
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
+
 import Captions from '../Captions'
 
-// Mock the dependencies
 jest.mock('axios')
 jest.mock('@/firebaseUtils/storage')
 jest.mock('file-saver')
 
 describe('Captions Component', () => {
 	beforeEach(() => {
-		// Clear all mocks before each test
 		jest.clearAllMocks()
+		render(<Captions />)
 	})
 
-	it('renders initial state correctly', () => {
-		render(<Captions />)
+	it('renders the page heading', () => {
+		expect(screen.getByRole('heading', { level: 1, name: 'Caption Generator' })).toBeInTheDocument()
+	})
 
-		// Check if title is present
-		expect(screen.getByText('Generate Captions')).toBeInTheDocument()
+	it('starts with the upload form', () => {
+		expect(screen.getByRole('textbox', { name: /youtube url/i })).toBeInTheDocument()
+		expect(screen.getByRole('button', { name: 'Upload' })).toBeDisabled()
+	})
 
-		// Check if SEO content is visible initially
+	it('explains how the tool works', () => {
+		expect(screen.getByRole('heading', { name: 'How it works' })).toBeInTheDocument()
 		expect(screen.getByText(/This is a simple tool/)).toBeInTheDocument()
-		expect(screen.getByText(/Follow these steps/)).toBeInTheDocument()
 	})
 })

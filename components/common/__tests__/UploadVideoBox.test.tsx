@@ -1,50 +1,79 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import '@testing-library/jest-dom'
 import axios from 'axios'
+
 import UploadVideoBox from '../UploadVideoBox'
 
-// Mock axios
 jest.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
 describe('UploadVideoBox', () => {
-	// Setup mock functions
-	const mockSetDownloadURL = jest.fn()
-	const mockSetVideoTitle = jest.fn()
-	const mockSetVideoCaptions = jest.fn()
-	const mockSetAudioURL = jest.fn()
+	const setDownloadURL = jest.fn()
+	const setVideoTitle = jest.fn()
+	const setVideoCaptions = jest.fn()
 
-	const defaultProps = {
-		setDownloadURL: mockSetDownloadURL,
-		setVideoTitle: mockSetVideoTitle,
-		setVideoCaptions: mockSetVideoCaptions,
-		setAudioURL: mockSetAudioURL,
+	const defaultProps = { setDownloadURL, setVideoTitle, setVideoCaptions }
+
+	const typeUrl = async (user: ReturnType<typeof userEvent.setup>, url: string) => {
+		await user.type(screen.getByRole('textbox', { name: /youtube url/i }), url)
 	}
 
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
 
-	it('renders correctly', () => {
+	it('renders the prompt and input', () => {
 		render(<UploadVideoBox {...defaultProps} />)
+
+		expect(screen.getByText('Paste a YouTube link')).toBeInTheDocument()
 		expect(screen.getByPlaceholderText('youtube.com/watch?v=yOu-TuBe_42')).toBeInTheDocument()
-		expect(screen.getByText('Please enter a proper Youtube URL')).toBeInTheDocument()
 	})
 
-	it('disables button for invalid YouTube URL', () => {
+	it('keeps the submit button disabled until the URL looks like YouTube', async () => {
+		const user = userEvent.setup()
 		render(<UploadVideoBox {...defaultProps} />)
-		const input = screen.getByPlaceholderText('youtube.com/watch?v=yOu-TuBe_42')
-		const button = screen.getByText('Upload')
 
-		fireEvent.change(input, { target: { value: 'invalid-url' } })
-		expect(button).toHaveClass('disabledButton')
+		const button = screen.getByRole('button', { name: 'Upload' })
+		expect(button).toBeDisabled()
+
+		await typeUrl(user, 'invalid-url')
+		expect(button).toBeDisabled()
+		expect(screen.getByText(/does not look like a YouTube URL/i)).toBeInTheDocument()
 	})
 
-	it('enables button for valid YouTube URL', () => {
+	it('enables the submit button for a valid URL', async () => {
+		const user = userEvent.setup()
 		render(<UploadVideoBox {...defaultProps} />)
-		const input = screen.getByPlaceholderText('youtube.com/watch?v=yOu-TuBe_42')
-		const button = screen.getByText('Upload')
 
-		fireEvent.change(input, { target: { value: 'https://www.youtube.com/watch?v=valid-id' } })
-		expect(button).toHaveClass('submitButton')
+		await typeUrl(user, 'https://www.youtube.com/watch?v=valid-id')
+
+		expect(screen.getByRole('button', { name: 'Upload' })).toBeEnabled()
+	})
+
+	it('passes the uploaded video details back to the page', async () => {
+		const user = userEvent.setup()
+		mockedAxios.post.mockResolvedValue({
+			data: { title: 'A video', downloadURL: 'https://cdn/video.mp4', subtitles: [] },
+		})
+		render(<UploadVideoBox {...defaultProps} />)
+
+		await typeUrl(user, 'https://www.youtube.com/watch?v=valid-id')
+		await user.click(screen.getByRole('button', { name: 'Upload' }))
+
+		await waitFor(() => expect(setVideoTitle).toHaveBeenCalledWith('A video'))
+		expect(setDownloadURL).toHaveBeenCalledWith('https://cdn/video.mp4')
+		expect(setVideoCaptions).toHaveBeenCalledWith([])
+	})
+
+	it('surfaces an error when the upload fails', async () => {
+		const user = userEvent.setup()
+		mockedAxios.post.mockRejectedValue(new Error('nope'))
+		render(<UploadVideoBox {...defaultProps} />)
+
+		await typeUrl(user, 'https://www.youtube.com/watch?v=valid-id')
+		await user.click(screen.getByRole('button', { name: 'Upload' }))
+
+		expect(await screen.findByRole('alert')).toHaveTextContent(/could not process that video/i)
 	})
 })
