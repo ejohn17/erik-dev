@@ -115,16 +115,16 @@ export const caseStudies: CaseStudy[] = [
 		summary:
 			'A mobile app for finding restaurant and bar events and daily specials in the Okanagan Valley, filtered by type, such as karaoke, trivia, or live music, and by day.',
 		cardSummary:
-			'React Native app with a Node backend and Next.js admin, fed by a Google Places, web scraping, and ChatGPT ingestion pipeline.',
+			'React Native app with a Node backend and Next.js admin, fed by an Overture Maps, web scraping, and ChatGPT ingestion pipeline.',
 		status: 'In development',
 		role: 'Independent product. Solo build of the mobile app, backend, admin panel, and data pipeline.',
 		dates: 'Mar 2026 – Present',
-		stack: ['React Native', 'Expo', 'Node.js', 'Next.js', 'Google Places API', 'OpenAI API (ChatGPT)', 'Web scraping'],
+		stack: ['React Native', 'Expo', 'Node.js', 'Next.js', 'Overture Maps (Places)', 'OpenAI API (ChatGPT)', 'Web scraping'],
 		architecture: [
 			{
 				label: 'Ingestion',
 				steps: [
-					'Google Places API discovers venues by city section',
+					'Overture Maps places data finds venues by city section',
 					'Scrape each venue website',
 					'ChatGPT extracts specials and events',
 					'Structured listings',
@@ -143,8 +143,9 @@ export const caseStudies: CaseStudy[] = [
 			title: 'Getting the data in',
 			paragraphs: [
 				"The app is only useful if it knows about tonight's trivia night and this week's wing special, and no single source lists those. Venues post them on their own websites, in free-form text, with no shared format.",
-				'I built an automated pipeline in four steps. The Google Places API seeds geographic sections of a city to discover restaurants and bars. A scraper fetches each venue website. ChatGPT extracts specials and upcoming events into structured records. The pipeline saves the page where each venue lists its events and re-scrapes it every few days, so listings stay current without rediscovering the whole city.',
+				'I built an automated pipeline in four steps. Overture Maps places data seeds geographic sections of a city to discover restaurants and bars. A scraper fetches each venue website. ChatGPT extracts specials and upcoming events into structured records. The pipeline saves the page where each venue lists its events and re-scrapes it every few days, so listings stay current without rediscovering the whole city.',
 				'Splitting discovery, scraping, and extraction into separate steps means each can be re-run on its own, and an extraction change can be tested against pages that were already saved.',
+				'That separation paid off when I changed the venue source. The first version discovered venues with the Google Places API, but its licensing terms and pricing were a poor fit for this app, so I moved discovery to Overture Maps, an open places dataset.',
 			],
 		},
 		nextSteps: [
