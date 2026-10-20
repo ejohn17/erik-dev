@@ -1,0 +1,161 @@
+@import 'styles/mixins';
+
+.root {
+	padding-block: clamp(2rem, 6vw, 4rem) 0;
+}
+
+.inner {
+	display: flex;
+	flex-direction: column;
+	gap: clamp(2.25rem, 5vw, 3.25rem);
+}
+
+.back {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	align-self: flex-start;
+	color: var(--text-muted);
+	font-size: var(--fs-sm);
+	transition: color var(--transition);
+
+	svg {
+		width: 1.4rem;
+		height: 1.4rem;
+	}
+
+	&:hover {
+		color: var(--text);
+	}
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.75rem;
+	color: var(--text-faint);
+	font-family: var(--font-mono);
+	font-size: var(--fs-xs);
+}
+
+.title {
+	font-size: var(--fs-h1);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+}
+
+.summary {
+	color: var(--text-muted);
+	font-size: var(--fs-lg);
+}
+
+.screenshot {
+	margin: 0;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: var(--shadow-md);
+
+	img {
+		width: 100%;
+		height: auto;
+	}
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.heading {
+	font-size: var(--fs-h3);
+}
+
+.body {
+	color: var(--text-muted);
+}
+
+.nextSteps {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin: 0;
+}
+
+.nextStep {
+	display: grid;
+	grid-template-columns: 8rem minmax(0, 1fr);
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--border);
+
+	dt {
+		color: var(--accent);
+		font-family: var(--font-mono);
+		font-size: var(--fs-xs);
+		line-height: 1.9;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+	}
+
+	dd {
+		margin: 0;
+		color: var(--text-muted);
+	}
+
+	@include sm-down {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.35rem;
+	}
+}
+
+.links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+}
+
+.linksNote {
+	color: var(--text-faint);
+	font-size: var(--fs-sm);
+}
+
+.next {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	padding: 1.5rem;
+	@include surface;
+	transition: border-color var(--transition), background-color var(--transition);
+
+	&:hover {
+		border-color: var(--accent-border);
+		background-color: var(--surface-hover);
+	}
+}
+
+.nextLabel {
+	@include eyebrow;
+}
+
+.nextTitle {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: var(--fs-h3);
+	font-weight: 600;
+
+	svg {
+		width: 1.6rem;
+		height: 1.6rem;
+		color: var(--accent);
+	}
+}

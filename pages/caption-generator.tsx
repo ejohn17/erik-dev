@@ -1,17 +1,14 @@
-import Head from 'next/head'
-
+import PageMeta from 'components/common/PageMeta'
 import Captions from 'components/captions/Captions'
 
 const CaptionsPage = () => {
 	return (
 		<>
-			<Head>
-				<title>Caption Generator &mdash; Erik Johnston</title>
-				<meta
-					name="description"
-					content="Extract the captions from any YouTube video, translate them into another language, and download the subtitled video."
-				/>
-			</Head>
+			<PageMeta
+				title="Caption Generator — Erik Johnston"
+				description="Extract the captions from any YouTube video, translate them into another language, and download the subtitled video."
+				path="/caption-generator"
+			/>
 			<Captions />
 		</>
 	)

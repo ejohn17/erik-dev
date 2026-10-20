@@ -1,5 +1,4 @@
-import { screen } from '@testing-library/dom'
-import { render } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import Home from '@/components/home/Home'
 
 describe('Home Component', () => {
@@ -7,130 +6,112 @@ describe('Home Component', () => {
 		render(<Home />)
 	})
 
-	describe('Introduction Section', () => {
-		it('renders the main heading', () => {
-			expect(screen.getByText(/Developer\./i)).toBeInTheDocument()
+	describe('Hero', () => {
+		it('names the role in the main heading', () => {
+			expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+				'Erik JohnstonFull-Stack Software Developer',
+			)
+		})
+
+		it('states location and remote availability', () => {
+			expect(screen.getByText(/Kelowna, BC · Open to remote work across Canada/i)).toBeInTheDocument()
 		})
 
 		it('displays the profile image', () => {
-			const headshot = screen.getByRole('img', { name: /headshot/i })
-			expect(headshot).toBeInTheDocument()
-			expect(headshot).toHaveAttribute('src', '/images/headshot.jpeg')
+			expect(screen.getByRole('img', { name: /headshot/i })).toHaveAttribute('src', '/images/headshot.jpeg')
 		})
 
-		it('renders experience tags', () => {
-			expect(screen.getByText(/Proven track record of leading/i)).toBeInTheDocument()
-			expect(screen.getByText(/Expertise in building scalable frontend applications/i)).toBeInTheDocument()
-		})
-	})
-
-	describe('Skills Section', () => {
-		it('renders the Technical Expertise heading', () => {
-			expect(screen.getByText(/Technical Expertise/i)).toBeInTheDocument()
-		})
-
-		it('displays all skill categories', () => {
-			expect(screen.getByText(/Frontend Development/i)).toBeInTheDocument()
-			expect(screen.getByText(/Backend Development/i)).toBeInTheDocument()
-			expect(screen.getByText(/DevOps & Tools/i)).toBeInTheDocument()
-		})
-
-		describe('Frontend Development Skills', () => {
-			it('lists all frontend technologies', () => {
-				const frontendSkills = [
-					/React\.js \/ Next\.js/i,
-					/TypeScript \/ JavaScript/i,
-					/SCSS \/ CSS3/i,
-					/Modern UI\/UX Design/i,
-				]
-
-				frontendSkills.forEach((skill) => {
-					expect(screen.getByText(skill)).toBeInTheDocument()
-				})
-			})
-		})
-
-		describe('Backend Development Skills', () => {
-			it('lists all backend technologies', () => {
-				const backendSkills = [/Node\.js \/ Express/i, /RESTful APIs/i, /Database Design/i, /System Architecture/i]
-
-				backendSkills.forEach((skill) => {
-					expect(screen.getByText(skill)).toBeInTheDocument()
-				})
-			})
-		})
-
-		describe('DevOps Skills', () => {
-			it('lists all DevOps tools and practices', () => {
-				const devOpsSkills = [
-					/AWS Cloud Services/i,
-					/CI\/CD Pipelines/i,
-					/Git \/ Version Control/i,
-					/Agile Methodologies/i,
-				]
-
-				devOpsSkills.forEach((skill) => {
-					expect(screen.getByText(skill)).toBeInTheDocument()
-				})
-			})
-		})
-	})
-
-	describe('About Me Section', () => {
-		it('renders the about me heading', () => {
-			expect(screen.getByText(/Professional Journey/i)).toBeInTheDocument()
-		})
-
-		it('displays the Kelowna image', () => {
-			const kelownaImg = screen.getByRole('img', { name: /kelowna/i })
-			expect(kelownaImg).toBeInTheDocument()
-			expect(kelownaImg).toHaveAttribute('src', '/images/kelowna.jpg')
-		})
-
-		it('contains education information', () => {
-			expect(screen.getByText(/University of British Columbia Okanagan/i)).toBeInTheDocument()
-		})
-
-		it('contains work experience information', () => {
-			expect(screen.getByText(/Saturn Animation Studios/i)).toBeInTheDocument()
-		})
-	})
-
-	describe('Practice Exercises Section', () => {
-		it('renders the section heading', () => {
-			expect(screen.getByText(/Practice Exercises/i)).toBeInTheDocument()
-		})
-
-		it('displays all exercise cards', () => {
-			expect(screen.getByText(/Youtube to mp3/i)).toBeInTheDocument()
-			expect(screen.getByText(/Caption Generator/i)).toBeInTheDocument()
-			expect(screen.getByText(/Blog/i)).toBeInTheDocument()
-		})
-
-		it('shows correct status for upcoming features', () => {
-			expect(screen.getByText(/Coming soon/i)).toBeInTheDocument()
-		})
-
-		it('renders navigation links for available exercises', () => {
-			const projectLinks = screen.getAllByRole('link', { name: /view project/i })
-
-			expect(projectLinks).toHaveLength(2) // Youtube to mp3 and Caption Generator
-			expect(projectLinks[0]).toHaveAttribute('href', '/youtube-to-mp3')
-			expect(projectLinks[1]).toHaveAttribute('href', '/caption-generator')
-		})
-
-		it('disables the exercise that is not ready yet', () => {
-			expect(screen.getByRole('button', { name: /coming soon/i })).toBeDisabled()
-		})
-	})
-
-	describe('Contact', () => {
-		it('links to email and resume', () => {
-			expect(screen.getAllByRole('link', { name: /get in touch/i })[0]).toHaveAttribute(
+		it('links to resume, GitHub, LinkedIn and email', () => {
+			expect(screen.getAllByRole('link', { name: 'Resume' })[0]).toHaveAttribute('href', '/files/resume.pdf')
+			expect(screen.getAllByRole('link', { name: 'GitHub' })[0]).toHaveAttribute('href', 'https://github.com/ejohn17')
+			expect(screen.getAllByRole('link', { name: 'LinkedIn' })[0]).toHaveAttribute(
+				'href',
+				'https://www.linkedin.com/in/erik-johnston-842225175/',
+			)
+			expect(screen.getAllByRole('link', { name: 'Email' })[0]).toHaveAttribute(
 				'href',
 				'mailto:johnstonerik17@gmail.com',
 			)
-			expect(screen.getAllByRole('link', { name: /view resume/i })[0]).toHaveAttribute('href', '/files/resume.pdf')
+		})
+
+		it('shows when the resume was last updated', () => {
+			expect(screen.getAllByText(/Resume PDF updated/i).length).toBeGreaterThan(0)
+		})
+	})
+
+	describe('Highlights', () => {
+		it('lists three proof points', () => {
+			const list = screen.getByRole('list', { name: 'Highlights' })
+			expect(within(list).getAllByRole('listitem')).toHaveLength(3)
+		})
+	})
+
+	describe('Resume consistency', () => {
+		it('uses the same numbers as the resume', () => {
+			const text = document.body.textContent
+
+			expect(text).toMatch(/5,000 monthly active users/)
+			expect(text).toMatch(/15\+ client/)
+			expect(text).toMatch(/two-person team/)
+			expect(text).toMatch(/80%/)
+			expect(text).toMatch(/roughly 40%/)
+		})
+
+		it('does not repeat claims that contradict the resume', () => {
+			const text = document.body.textContent
+
+			expect(text).not.toMatch(/10,000/)
+			expect(text).not.toMatch(/team of 5/i)
+			expect(text).not.toMatch(/60%|35%|50%/)
+			expect(text).not.toMatch(/Claude 3/i)
+			expect(text).not.toMatch(/6\+ years/i)
+		})
+	})
+
+	describe('Experience', () => {
+		it('lists every role from the resume, most recent first', () => {
+			const section = document.getElementById('experience')
+			const headings = within(section).getAllByRole('heading', { level: 3 })
+
+			expect(headings[0]).toHaveTextContent(/Bubbas Closet/)
+			expect(headings[1]).toHaveTextContent(/Xambi Tech \/ Plutaro Studio/)
+			expect(headings[2]).toHaveTextContent(/Saturn Animation Studios/)
+			expect(headings[3]).toHaveTextContent(/B\.S\. Computer Science/)
+			expect(within(section).getByText('University of British Columbia Okanagan')).toBeInTheDocument()
+		})
+	})
+
+	describe('Projects', () => {
+		it('links to each case study', () => {
+			expect(screen.getByRole('link', { name: /Bubbas Closet case study/i })).toHaveAttribute(
+				'href',
+				'/projects/bubbas-closet',
+			)
+			expect(screen.getByRole('link', { name: /Local Events & Specials App case study/i })).toHaveAttribute(
+				'href',
+				'/projects/okanagan-events',
+			)
+		})
+
+		it('shows Kukarella with its public links', () => {
+			expect(screen.getByRole('link', { name: 'kukarella.com' })).toHaveAttribute('href', 'https://www.kukarella.com')
+			expect(screen.getByRole('link', { name: /Innovate BC/i })).toBeInTheDocument()
+		})
+
+		it('no longer shows the removed hobby tools or the empty blog card', () => {
+			expect(screen.queryByText(/Youtube to mp3/i)).not.toBeInTheDocument()
+			expect(screen.queryByText(/Technical Blog/i)).not.toBeInTheDocument()
+			expect(screen.queryByText(/Coming soon/i)).not.toBeInTheDocument()
+		})
+	})
+
+	describe('Skills', () => {
+		it('uses the same groups as the resume', () => {
+			const grid = screen.getByTestId('skills-categories')
+
+			for (const group of ['Languages', 'Frontend & Backend', 'Data & Cloud', 'Tools & Practices']) {
+				expect(within(grid).getByRole('heading', { name: group })).toBeInTheDocument()
+			}
 		})
 	})
 })

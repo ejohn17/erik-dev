@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 import MobileNav from '../MobileNav'
 
 jest.mock('next/router', () => ({
-	useRouter: () => ({ pathname: '/youtube-to-mp3' }),
+	useRouter: () => ({ pathname: '/projects/bubbas-closet' }),
 }))
 
 describe('MobileNav', () => {
@@ -31,14 +31,23 @@ describe('MobileNav', () => {
 	it('marks the active route', () => {
 		render(<MobileNav open onClose={onClose} />)
 
-		expect(screen.getByRole('link', { name: /youtube to mp3/i })).toHaveAttribute('aria-current', 'page')
+		expect(screen.getByRole('link', { name: /^projects/i })).toHaveAttribute('aria-current', 'page')
+	})
+
+	it('offers resume, LinkedIn, GitHub and email links', () => {
+		render(<MobileNav open onClose={onClose} />)
+
+		expect(screen.getByRole('link', { name: /resume/i })).toHaveAttribute('href', '/files/resume.pdf')
+		expect(screen.getByRole('link', { name: 'LinkedIn' })).toBeInTheDocument()
+		expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument()
+		expect(screen.getByRole('link', { name: /johnstonerik17@gmail.com/i })).toBeInTheDocument()
 	})
 
 	it('closes when a destination is chosen', async () => {
 		const user = userEvent.setup()
 		render(<MobileNav open onClose={onClose} />)
 
-		await user.click(screen.getByRole('link', { name: /caption generator/i }))
+		await user.click(screen.getByRole('link', { name: /^experience/i }))
 
 		expect(onClose).toHaveBeenCalledTimes(1)
 	})

@@ -7,13 +7,13 @@ import NavLink from '../NavLink'
 describe('NavLink', () => {
 	it('renders a link to the given path', () => {
 		render(
-			<NavLink href="/youtube-to-mp3" active={false}>
-				Youtube to Mp3
+			<NavLink href="/#projects" active={false}>
+				Projects
 			</NavLink>,
 		)
 
-		const link = screen.getByRole('link', { name: 'Youtube to Mp3' })
-		expect(link).toHaveAttribute('href', '/youtube-to-mp3')
+		const link = screen.getByRole('link', { name: 'Projects' })
+		expect(link).toHaveAttribute('href', '/#projects')
 		expect(link).not.toHaveAttribute('aria-current')
 	})
 

@@ -3,10 +3,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import cn from 'classnames'
 
-import { MdClose, MdMailOutline } from 'react-icons/md'
+import { MdClose, MdMailOutline, MdOutlineDescription } from 'react-icons/md'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 import IconButton from 'components/common/IconButton'
-import navigation, { CONTACT_EMAIL } from '../navigation'
+import navigation, { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, RESUME_PATH, isActive } from '../navigation'
 
 import classes from './styles/MobileNav.module.scss'
 
@@ -84,8 +85,9 @@ const MobileNav = ({ open, onClose }: MobileNavProps): JSX.Element => {
 				</div>
 
 				<nav className={classes.links}>
-					{navigation.map(({ href, label, description, icon: Icon }) => {
-						const active = pathname === href
+					{navigation.map((item) => {
+						const { href, label, description, icon: Icon } = item
+						const active = isActive(item, pathname)
 
 						return (
 							<Link
@@ -107,10 +109,24 @@ const MobileNav = ({ open, onClose }: MobileNavProps): JSX.Element => {
 					})}
 				</nav>
 
-				<a className={classes.contact} href={`mailto:${CONTACT_EMAIL}`} onClick={onClose}>
-					<MdMailOutline />
-					{CONTACT_EMAIL}
-				</a>
+				<div className={classes.contact}>
+					<a className={classes.contactLink} href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
+						<MdOutlineDescription />
+						Resume (PDF)
+					</a>
+					<a className={classes.contactLink} href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">
+						<FaLinkedin />
+						LinkedIn
+					</a>
+					<a className={classes.contactLink} href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
+						<FaGithub />
+						GitHub
+					</a>
+					<a className={classes.contactLink} href={`mailto:${CONTACT_EMAIL}`} onClick={onClose}>
+						<MdMailOutline />
+						{CONTACT_EMAIL}
+					</a>
+				</div>
 			</div>
 		</div>
 	)
