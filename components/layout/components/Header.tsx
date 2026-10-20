@@ -4,12 +4,14 @@ import { useRouter } from 'next/router'
 import cn from 'classnames'
 
 import { MdMenu } from 'react-icons/md'
+import { FaGithub, FaLinkedin } from 'react-icons/fa'
 
 import Button from 'components/common/Button'
 import IconButton from 'components/common/IconButton'
+import IconLink from 'components/common/IconLink'
 import MobileNav from './MobileNav'
 import NavLink from './NavLink'
-import navigation, { CONTACT_EMAIL } from '../navigation'
+import navigation, { GITHUB_URL, LINKEDIN_URL, RESUME_PATH, isActive } from '../navigation'
 
 import classes from './styles/Header.module.scss'
 
@@ -42,21 +44,46 @@ const Header = (): JSX.Element => {
 						</span>
 						<span className={classes.brandText}>
 							<span className={classes.brandName}>Erik Johnston</span>
-							<span className={classes.brandRole}>Software Developer</span>
+							<span className={classes.brandRole}>Full-Stack Software Developer</span>
 						</span>
 					</Link>
 
 					<nav className={classes.nav} aria-label="Main">
-						{navigation.map(({ href, label }) => (
-							<NavLink key={href} href={href} active={pathname === href}>
-								{label}
+						{navigation.map((item) => (
+							<NavLink key={item.href} href={item.href} active={isActive(item, pathname)}>
+								{item.label}
 							</NavLink>
 						))}
 					</nav>
 
 					<div className={classes.actions}>
-						<Button href={`mailto:${CONTACT_EMAIL}`} variant="secondary" size="sm" className={classes.contact}>
-							Get in touch
+						<IconLink
+							href={GITHUB_URL}
+							aria-label="GitHub"
+							className={classes.social}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<FaGithub />
+						</IconLink>
+						<IconLink
+							href={LINKEDIN_URL}
+							aria-label="LinkedIn"
+							className={classes.social}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<FaLinkedin />
+						</IconLink>
+						<Button
+							href={RESUME_PATH}
+							variant="secondary"
+							size="sm"
+							className={classes.resume}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							Resume
 						</Button>
 						<IconButton
 							className={classes.menuButton}

@@ -18,9 +18,9 @@ describe('Button', () => {
 	})
 
 	it('renders a link when given an href', () => {
-		render(<Button href="/youtube-to-mp3">View Project</Button>)
+		render(<Button href="/projects/bubbas-closet">View Project</Button>)
 
-		expect(screen.getByRole('link', { name: 'View Project' })).toHaveAttribute('href', '/youtube-to-mp3')
+		expect(screen.getByRole('link', { name: 'View Project' })).toHaveAttribute('href', '/projects/bubbas-closet')
 	})
 
 	it('renders an external anchor for non route hrefs', () => {

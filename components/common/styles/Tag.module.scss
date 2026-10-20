@@ -1,0 +1,30 @@
+.tag {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.2rem 0.6rem;
+	border: 1px solid var(--border);
+	border-radius: var(--radius-full);
+	font-family: var(--font-mono);
+	font-size: var(--fs-xs);
+	line-height: 1.5;
+	white-space: nowrap;
+}
+
+.neutral {
+	background-color: var(--surface);
+	color: var(--text-muted);
+}
+
+.accent {
+	background-color: var(--accent-soft);
+	border-color: var(--accent-border);
+	color: var(--accent);
+}
+
+.list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+	padding: 0;
+	list-style: none;
+}

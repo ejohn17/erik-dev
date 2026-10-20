@@ -5,6 +5,10 @@ const nextConfig = {
 		ignoreDuringBuilds: true,
 	},
 
+	async redirects() {
+		return [{ source: '/youtube-to-mp3', destination: '/', permanent: true }]
+	},
+
 	async headers() {
 		return [
 			{

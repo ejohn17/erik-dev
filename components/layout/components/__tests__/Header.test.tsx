@@ -19,18 +19,30 @@ describe('Header', () => {
 		render(<Header />)
 		const nav = screen.getByRole('navigation', { name: 'Main' })
 
-		expect(within(nav).getByRole('link', { name: 'Home' })).toHaveAttribute('href', '/')
-		expect(within(nav).getByRole('link', { name: 'Youtube to Mp3' })).toHaveAttribute('href', '/youtube-to-mp3')
-		expect(within(nav).getByRole('link', { name: 'Caption Generator' })).toHaveAttribute('href', '/caption-generator')
+		expect(within(nav).getByRole('link', { name: 'Experience' })).toHaveAttribute('href', '/#experience')
+		expect(within(nav).getByRole('link', { name: 'Projects' })).toHaveAttribute('href', '/#projects')
+		expect(within(nav).getByRole('link', { name: 'Skills' })).toHaveAttribute('href', '/#skills')
+		expect(within(nav).getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/#contact')
 	})
 
-	it('marks the current page in the navigation', () => {
-		mockPathname.mockReturnValue('/youtube-to-mp3')
+	it('links to GitHub, LinkedIn and the resume', () => {
+		render(<Header />)
+
+		expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/ejohn17')
+		expect(screen.getByRole('link', { name: 'LinkedIn' })).toHaveAttribute(
+			'href',
+			'https://www.linkedin.com/in/erik-johnston-842225175/',
+		)
+		expect(screen.getByRole('link', { name: 'Resume' })).toHaveAttribute('href', '/files/resume.pdf')
+	})
+
+	it('marks Projects as current on a case study page', () => {
+		mockPathname.mockReturnValue('/projects/bubbas-closet')
 		render(<Header />)
 		const nav = screen.getByRole('navigation', { name: 'Main' })
 
-		expect(within(nav).getByRole('link', { name: 'Youtube to Mp3' })).toHaveAttribute('aria-current', 'page')
-		expect(within(nav).getByRole('link', { name: 'Home' })).not.toHaveAttribute('aria-current')
+		expect(within(nav).getByRole('link', { name: 'Projects' })).toHaveAttribute('aria-current', 'page')
+		expect(within(nav).getByRole('link', { name: 'Experience' })).not.toHaveAttribute('aria-current')
 	})
 
 	it('opens the mobile menu from the toggle', async () => {

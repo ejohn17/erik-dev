@@ -83,11 +83,19 @@
 .actions {
 	display: flex;
 	align-items: center;
-	gap: 0.6rem;
+	gap: 0.35rem;
 }
 
-.contact {
+.resume {
+	margin-left: 0.4rem;
+
 	@include md-down {
+		display: none;
+	}
+}
+
+.social {
+	@include sm-down {
 		display: none;
 	}
 }

@@ -131,11 +131,17 @@
 
 .contact {
 	display: flex;
-	align-items: center;
-	gap: 0.6rem;
+	flex-direction: column;
+	gap: 0.85rem;
 	margin-top: auto;
 	padding: 0.85rem;
 	border-top: 1px solid var(--border);
+}
+
+.contactLink {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
 	color: var(--text-muted);
 	font-size: var(--fs-sm);
 	word-break: break-all;

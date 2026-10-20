@@ -1,17 +1,14 @@
-import Head from 'next/head'
-
+import PageMeta from 'components/common/PageMeta'
 import Home from 'components/home/Home'
 
 const HomePage = () => {
 	return (
 		<>
-			<Head>
-				<title>Erik Johnston &mdash; Software Developer</title>
-				<meta
-					name="description"
-					content="Erik Johnston is a full-stack developer in Kelowna, BC, building scalable SaaS products with React, Next.js, Node.js and AWS."
-				/>
-			</Head>
+			<PageMeta
+				title="Erik Johnston — Full-Stack Software Developer"
+				description="Full-stack TypeScript developer in Kelowna, BC. React, Next.js, Node.js, PostgreSQL and Firebase. Led Kukarella and two sibling SaaS products serving 5,000 monthly active users. Open to remote work across Canada."
+				path="/"
+			/>
 			<Home />
 		</>
 	)
