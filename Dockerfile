@@ -1,11 +1,9 @@
-FROM node:20-bullseye-slim
+FROM node:20-bookworm-slim
 
-RUN apt update
-RUN apt-get install nodejs -y
-RUN apt-get install yarn -y
-
-RUN apt-get install -y \
+# Node and yarn come with the base image. ffmpeg and python3 are for the caption generator's yt-dlp.
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
+    ca-certificates \
     rsync \
     openssh-client \
     wget \
